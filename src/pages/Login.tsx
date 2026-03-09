@@ -15,12 +15,14 @@ const Login = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
       toast.error(error.message);
     } else {
-      navigate("/dashboard");
+      // Redirect to external dashboard with session token
+      const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "http://localhost:8080";
+      window.location.href = `${dashboardUrl}?access_token=${data.session?.access_token}&refresh_token=${data.session?.refresh_token}`;
     }
   };
 
