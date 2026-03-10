@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Ghost, LogOut, ArrowLeft, Check, X, Save, Search, Download, Calendar, Clock, TrendingUp, DollarSign, Users, CreditCard, Zap, Shield, Eye, Settings as SettingsIcon } from "lucide-react";
 import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/sonner";
 import { motion } from "framer-motion";
 
 interface UserRow {
@@ -120,36 +120,52 @@ const Admin = () => {
   }, []);
 
   const toggleSubscription = async (userId: string, subId: string | null, currentStatus: string) => {
+    console.log('[Admin] toggleSubscription called:', { userId, subId, currentStatus });
+
     // For activation, show modal to choose plan
     if (currentStatus !== "active") {
+      console.log('[Admin] Status is not active, showing activation modal');
       const user = users.find(u => u.id === userId);
+      console.log('[Admin] Found user for activation:', user);
       setSelectedUser(user || null);
       setShowActivateModal(true);
       return;
     }
 
     // For deactivation, just update status
+    console.log('[Admin] Deactivating subscription:', subId);
     if (subId) {
-      await supabase.from("subscriptions").update({
+      const { data, error } = await supabase.from("subscriptions").update({
         status: "inactive",
         expires_at: null
-      }).eq("id", subId);
-      toast.success("Subscription deactivated");
-      fetchUsers();
+      }).eq("id", subId).select();
+
+      if (error) {
+        console.error('[Admin] Deactivation error:', error);
+        toast.error(`Error: ${error.message}`);
+      } else {
+        console.log('[Admin] Deactivation success:', data);
+        toast.success("Subscription deactivated");
+        fetchUsers();
+      }
     }
   };
 
   const activateSubscription = async () => {
+    console.log('[Admin] ========== ACTIVATION STARTED ==========');
+
     if (!selectedUser) {
-      console.error('[Admin] No user selected for activation');
+      console.error('[Admin] ❌ No user selected for activation');
+      toast.error('No user selected');
       return;
     }
 
-    console.log('[Admin] Activating subscription for:', {
+    console.log('[Admin] ✅ User selected:', {
       userId: selectedUser.id,
       email: selectedUser.email,
       plan: selectedPlanForActivation,
-      existingSubId: selectedUser.sub_id
+      existingSubId: selectedUser.sub_id,
+      currentStatus: selectedUser.sub_status
     });
 
     const planConfig = {
@@ -160,11 +176,23 @@ const Admin = () => {
     const config = planConfig[selectedPlanForActivation];
     const expiresAt = new Date(Date.now() + config.days * 24 * 60 * 60 * 1000).toISOString();
 
-    console.log('[Admin] Plan config:', { amount: config.amount, days: config.days, expiresAt });
+    console.log('[Admin] 📋 Plan configuration:', {
+      selectedPlan: selectedPlanForActivation,
+      amount: config.amount,
+      days: config.days,
+      expiresAt: expiresAt,
+      expiresAtReadable: new Date(expiresAt).toLocaleString('fr-FR')
+    });
 
     try {
       if (selectedUser.sub_id) {
-        console.log('[Admin] Updating existing subscription:', selectedUser.sub_id);
+        console.log('[Admin] 🔄 Updating existing subscription:', selectedUser.sub_id);
+        console.log('[Admin] 📤 Sending UPDATE request with:', {
+          status: "active",
+          amount: config.amount,
+          expires_at: expiresAt
+        });
+
         const { data, error } = await supabase.from("subscriptions").update({
           status: "active",
           amount: config.amount,
@@ -172,13 +200,26 @@ const Admin = () => {
         }).eq("id", selectedUser.sub_id).select();
 
         if (error) {
-          console.error('[Admin] Update error:', error);
+          console.error('[Admin] ❌ UPDATE ERROR:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+          });
           toast.error(`Error: ${error.message}`);
           return;
         }
-        console.log('[Admin] Update success:', data);
+        console.log('[Admin] ✅ UPDATE SUCCESS:', data);
+        console.log('[Admin] 📊 Updated subscription data:', JSON.stringify(data, null, 2));
       } else {
-        console.log('[Admin] Creating new subscription');
+        console.log('[Admin] ➕ Creating new subscription (no existing sub_id)');
+        console.log('[Admin] 📤 Sending INSERT request with:', {
+          user_id: selectedUser.id,
+          status: "active",
+          amount: config.amount,
+          expires_at: expiresAt
+        });
+
         const { data, error } = await supabase.from("subscriptions").insert({
           user_id: selectedUser.id,
           status: "active" as any,
@@ -187,39 +228,70 @@ const Admin = () => {
         }).select();
 
         if (error) {
-          console.error('[Admin] Insert error:', error);
+          console.error('[Admin] ❌ INSERT ERROR:', {
+            message: error.message,
+            details: error.details,
+            hint: error.hint,
+            code: error.code
+          });
           toast.error(`Error: ${error.message}`);
           return;
         }
-        console.log('[Admin] Insert success:', data);
+        console.log('[Admin] ✅ INSERT SUCCESS:', data);
+        console.log('[Admin] 📊 New subscription data:', JSON.stringify(data, null, 2));
       }
 
+      console.log('[Admin] 🎉 Activation completed successfully');
       toast.success(`${selectedPlanForActivation === "monthly" ? "Monthly" : "Annual"} subscription activated!`);
+
+      console.log('[Admin] 🔄 Refreshing user list...');
       setShowActivateModal(false);
       setSelectedUser(null);
-      fetchUsers();
+      await fetchUsers();
+      console.log('[Admin] ✅ User list refreshed');
+      console.log('[Admin] ========== ACTIVATION ENDED ==========');
     } catch (err) {
-      console.error('[Admin] Unexpected error:', err);
+      console.error('[Admin] ❌ UNEXPECTED ERROR:', err);
+      console.error('[Admin] Error stack:', err instanceof Error ? err.stack : 'No stack trace');
       toast.error('Unexpected error occurred');
     }
   };
 
-  const extendSubscription = async (subId: string, days: number) => {
+  const renewSubscription = async (subId: string, currentAmount: number) => {
+    console.log('[Admin] 🔄 Renewing subscription:', subId);
     const user = users.find(u => u.sub_id === subId);
-    if (!user) return;
+    if (!user) {
+      console.error('[Admin] ❌ User not found for renewal');
+      return;
+    }
 
+    // Determine plan based on amount
+    const isAnnual = currentAmount >= 400; // Annual is 474€
+    const days = isAnnual ? 365 : 30;
+
+    console.log('[Admin] 📋 Renewal plan:', { isAnnual, days, currentAmount });
+
+    // Calculate new expiry from current expiry date (not today)
     const currentExpiry = user.sub_expires ? new Date(user.sub_expires) : new Date();
     const newExpiry = new Date(currentExpiry.getTime() + days * 24 * 60 * 60 * 1000);
 
-    const { error } = await supabase.from('subscriptions').update({
+    console.log('[Admin] 📅 Dates:', {
+      currentExpiry: currentExpiry.toISOString(),
+      newExpiry: newExpiry.toISOString(),
+      daysAdded: days
+    });
+
+    const { data, error } = await supabase.from('subscriptions').update({
       expires_at: newExpiry.toISOString(),
       status: 'active'
-    }).eq('id', subId);
+    }).eq('id', subId).select();
 
     if (error) {
-      toast.error('Error: ' + error.message);
+      console.error('[Admin] ❌ Renewal error:', error);
+      toast.error('Erreur: ' + error.message);
     } else {
-      toast.success(`Extended by ${days} days`);
+      console.log('[Admin] ✅ Renewal success:', data);
+      toast.success(`Abonnement renouvelé pour ${days} jours`);
       fetchUsers();
     }
   };
@@ -521,6 +593,7 @@ const Admin = () => {
                     {activeUsers.map((u, idx) => {
                       const daysLeft = getDaysUntilExpiry(u.sub_expires);
                       const isExpiringSoon = daysLeft !== null && daysLeft < 7 && daysLeft > 0;
+                      const canRenew = daysLeft !== null && daysLeft <= 3; // Renewal only if 3 days or less
 
                       return (
                         <motion.div
@@ -536,7 +609,7 @@ const Admin = () => {
                               <Badge variant="default">Active</Badge>
                               {isExpiringSoon && (
                                 <Badge variant="outline" className="text-orange-500 border-orange-500/50">
-                                  <Clock className="w-3 h-3 mr-1" /> {daysLeft} days left
+                                  <Clock className="w-3 h-3 mr-1" /> {daysLeft} jours restants
                                 </Badge>
                               )}
                               {daysLeft === null && (
@@ -548,17 +621,24 @@ const Admin = () => {
                             <p className="text-xs text-muted-foreground">{u.email}</p>
                             <p className="text-xs text-muted-foreground">
                               {u.sub_amount}€ • {u.crypto_currency || 'N/A'}
-                              {u.sub_expires && ` • Expires: ${new Date(u.sub_expires).toLocaleDateString('fr-FR')}`}
+                              {u.sub_expires && ` • Expire: ${new Date(u.sub_expires).toLocaleDateString('fr-FR')}`}
                             </p>
                           </div>
                           <div className="flex gap-2">
                             {u.sub_id && (
                               <>
-                                <Button size="sm" variant="outline" onClick={() => extendSubscription(u.sub_id!, 30)} className="gap-1">
-                                  <Calendar className="w-3 h-3" /> +30d
-                                </Button>
+                                {canRenew && (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={() => renewSubscription(u.sub_id!, u.sub_amount || 79)}
+                                    className="gap-1 border-green-500/50 text-green-500 hover:bg-green-500/10"
+                                  >
+                                    <Calendar className="w-3 h-3" /> Renouveler
+                                  </Button>
+                                )}
                                 <Button size="sm" variant="outline" onClick={() => toggleSubscription(u.id, u.sub_id, u.sub_status)} className="text-destructive hover:text-destructive">
-                                  Deactivate
+                                  Désactiver
                                 </Button>
                               </>
                             )}
@@ -754,3 +834,5 @@ const Admin = () => {
     </div>
   );
 };
+
+export default Admin;
