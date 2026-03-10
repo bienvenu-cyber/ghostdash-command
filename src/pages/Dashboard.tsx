@@ -92,10 +92,8 @@ const Dashboard = () => {
   const daysRemaining = getDaysRemaining();
 
   const handleOpenDashboard = () => {
-    // In production, VITE_DASHBOARD_URL should be set in Vercel env vars
-    // Fallback to Vercel URL if not set, then localhost for dev
-    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL ||
-      (import.meta.env.PROD ? "https://ghostdash-pied.vercel.app/dashboard" : "http://localhost:8484");
+    // Use env var if set, otherwise fallback to Vercel dashboard URL
+    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://ghostdash-pied.vercel.app";
     window.open(dashboardUrl, "_blank");
   };
 
