@@ -92,7 +92,7 @@ const Dashboard = () => {
   const daysRemaining = getDaysRemaining();
 
   const handleOpenDashboard = () => {
-    const dashboardUrl = import.meta.env.VITE_ONLYFANS_DASHBOARD_URL || "http://localhost:8484";
+    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "http://localhost:8484";
     window.open(dashboardUrl, "_blank");
   };
 
