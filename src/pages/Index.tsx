@@ -8,9 +8,16 @@ import Testimonials from "@/components/landing/Testimonials";
 import Pricing from "@/components/landing/Pricing";
 import HowItWorks from "@/components/landing/HowItWorks";
 import Footer from "@/components/landing/Footer";
+import { SEO } from "@/components/SEO";
 
 const Index = () => (
   <main className="bg-background min-h-screen">
+    <SEO
+      title="Ghostdash — Editable OnlyFans Dashboard for Agencies & Creators"
+      description="Stop chasing, start closing. The ultimate editable OnlyFans dashboard replica. Customize earnings, subscribers, analytics and export professional screenshots."
+      keywords="onlyfans dashboard, editable dashboard, onlyfans replica, creator dashboard, agency tools, onlyfans analytics, custom dashboard, onlyfans stats, screenshot generator, onlyfans agency"
+      canonical="https://ghostdashof.com"
+    />
     <Navbar />
     <div id="hero">
       <Hero />

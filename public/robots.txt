@@ -1,14 +1,14 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
+# Ghostdash Robots.txt
 User-agent: *
 Allow: /
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /payment
+Disallow: /login
+Disallow: /signup
+
+# Sitemap
+Sitemap: https://ghostdashof.com/sitemap.xml
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1

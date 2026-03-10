@@ -10,11 +10,30 @@ const Footer = () => (
         </div>
         <div className="flex gap-6 text-sm text-muted-foreground">
           <a href="https://t.me/ghostdashadmin" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Telegram</a>
-          <span>Terms of Service</span>
-          <span>Privacy Policy</span>
+          <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
+          <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
         </div>
         <p className="text-xs text-muted-foreground/50">© {new Date().getFullYear()} Ghostdash. All rights reserved.</p>
       </div>
+
+      {/* Structured Data for Organization */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{
+        __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "name": "Ghostdash",
+          "url": "https://ghostdashof.com",
+          "logo": "https://ghostdashof.com/logo.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "url": "https://t.me/ghostdashadmin"
+          },
+          "sameAs": [
+            "https://t.me/ghostdashadmin"
+          ]
+        })
+      }} />
     </div>
   </footer>
 );

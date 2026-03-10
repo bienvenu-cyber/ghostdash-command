@@ -7,6 +7,7 @@ import { Ghost, ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import authLoginSvg from "@/assets/auth-login.svg";
+import { SEO } from "@/components/SEO";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -30,6 +31,11 @@ const Login = () => {
 
   return (
     <div className="min-h-screen flex">
+      <SEO
+        title="Login — Ghostdash"
+        description="Access your Ghostdash account and manage your custom OnlyFans dashboard."
+        noindex={true}
+      />
       {/* Left Side - Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-background">
         <motion.div

@@ -3,13 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Ghost, ExternalLink, LogOut, User, CreditCard, Settings, Sparkles, Calendar, Clock, Edit2, Check, X } from "lucide-react";
+import { Ghost, ExternalLink, LogOut, User, CreditCard, Sparkles, Calendar, Clock, Edit2, Check, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { useAutoLogout } from "@/hooks/useAutoLogout";
 import { toast } from "sonner";
+import { SEO } from "@/components/SEO";
 
 interface SubscriptionData {
   status: string;
@@ -97,6 +98,11 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-muted/20">
+      <SEO
+        title="My Space — Ghostdash Dashboard"
+        description="Manage your Ghostdash subscription and access your custom OnlyFans dashboard."
+        noindex={true}
+      />
       {/* Header */}
       <header className="border-b border-border/30 px-6 py-4 bg-background/80 backdrop-blur-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
