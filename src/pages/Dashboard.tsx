@@ -94,7 +94,14 @@ const Dashboard = () => {
   const handleOpenDashboard = () => {
     // Use env var if set, otherwise fallback to production dashboard URL
     const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://fansboard.vercel.app";
-    window.open(dashboardUrl, "_blank");
+
+    // For mobile compatibility, use location.href instead of window.open if popup is blocked
+    const newWindow = window.open(dashboardUrl, "_blank", "noopener,noreferrer");
+
+    // Fallback for mobile browsers that block popups
+    if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+      window.location.href = dashboardUrl;
+    }
   };
 
   return (
