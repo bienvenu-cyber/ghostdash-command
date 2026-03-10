@@ -92,8 +92,8 @@ const Dashboard = () => {
   const daysRemaining = getDaysRemaining();
 
   const handleOpenDashboard = () => {
-    // Use env var if set, otherwise fallback to Vercel dashboard URL
-    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://ghostdash-pied.vercel.app";
+    // Use env var if set, otherwise fallback to production dashboard URL
+    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://fansboard.vercel.app";
     window.open(dashboardUrl, "_blank");
   };
 
