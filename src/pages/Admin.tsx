@@ -41,6 +41,9 @@ const Admin = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [screenshotUrl, setScreenshotUrl] = useState<string | null>(null);
   const [showScreenshot, setShowScreenshot] = useState(false);
+  const [showActivateModal, setShowActivateModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
+  const [selectedPlanForActivation, setSelectedPlanForActivation] = useState<"monthly" | "annual">("monthly");
   const [stats, setStats] = useState<Stats>({
     totalRevenue: 0,
     activeUsers: 0,
@@ -117,23 +120,54 @@ const Admin = () => {
   }, []);
 
   const toggleSubscription = async (userId: string, subId: string | null, currentStatus: string) => {
-    const newStatus = currentStatus === "active" ? "inactive" : "active";
-    const expiresAt = newStatus === "active" ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString() : null;
+    // For activation, show modal to choose plan
+    if (currentStatus !== "active") {
+      const user = users.find(u => u.id === userId);
+      setSelectedUser(user || null);
+      setShowActivateModal(true);
+      return;
+    }
 
+    // For deactivation, just update status
     if (subId) {
       await supabase.from("subscriptions").update({
-        status: newStatus,
-        expires_at: expiresAt
+        status: "inactive",
+        expires_at: null
       }).eq("id", subId);
+      toast.success("Subscription deactivated");
+      fetchUsers();
+    }
+  };
+
+  const activateSubscription = async () => {
+    if (!selectedUser) return;
+
+    const planConfig = {
+      monthly: { amount: 79, days: 30 },
+      annual: { amount: 474, days: 365 }
+    };
+
+    const config = planConfig[selectedPlanForActivation];
+    const expiresAt = new Date(Date.now() + config.days * 24 * 60 * 60 * 1000).toISOString();
+
+    if (selectedUser.sub_id) {
+      await supabase.from("subscriptions").update({
+        status: "active",
+        amount: config.amount,
+        expires_at: expiresAt
+      }).eq("id", selectedUser.sub_id);
     } else {
       await supabase.from("subscriptions").insert({
-        user_id: userId,
-        status: newStatus as any,
-        amount: 79,
+        user_id: selectedUser.id,
+        status: "active" as any,
+        amount: config.amount,
         expires_at: expiresAt
       });
     }
-    toast.success(`Subscription ${newStatus}`);
+
+    toast.success(`${selectedPlanForActivation === "monthly" ? "Monthly" : "Annual"} subscription activated!`);
+    setShowActivateModal(false);
+    setSelectedUser(null);
     fetchUsers();
   };
 
@@ -619,9 +653,71 @@ const Admin = () => {
             )}
           </DialogContent>
         </Dialog>
+
+        {/* Activation Modal */}
+        <Dialog open={showActivateModal} onOpenChange={setShowActivateModal}>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>Activate Subscription</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <p className="text-sm text-muted-foreground">
+                Select the plan for <span className="font-medium text-foreground">{selectedUser?.email}</span>
+              </p>
+
+              <div className="space-y-3">
+                <Card
+                  onClick={() => setSelectedPlanForActivation("monthly")}
+                  className={`p-4 cursor-pointer transition-all ${selectedPlanForActivation === "monthly"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/30"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-bold">Monthly Plan</p>
+                      <p className="text-sm text-muted-foreground">€79 / 30 days</p>
+                    </div>
+                    {selectedPlanForActivation === "monthly" && (
+                      <Check className="h-5 w-5 text-primary" />
+                    )}
+                  </div>
+                </Card>
+
+                <Card
+                  onClick={() => setSelectedPlanForActivation("annual")}
+                  className={`p-4 cursor-pointer transition-all ${selectedPlanForActivation === "annual"
+                      ? "border-primary bg-primary/5"
+                      : "border-border hover:border-primary/30"
+                    }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-bold">Annual Plan</p>
+                      <p className="text-sm text-muted-foreground">€474 / 365 days</p>
+                      <Badge className="mt-1 bg-green-500/20 text-green-400 border-green-500/50 text-xs">
+                        6 months FREE
+                      </Badge>
+                    </div>
+                    {selectedPlanForActivation === "annual" && (
+                      <Check className="h-5 w-5 text-primary" />
+                    )}
+                  </div>
+                </Card>
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <Button variant="outline" onClick={() => setShowActivateModal(false)} className="flex-1">
+                  Cancel
+                </Button>
+                <Button onClick={activateSubscription} className="flex-1 bg-green-500 hover:bg-green-600">
+                  <Check className="w-4 h-4 mr-2" /> Activate
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
 };
-
-export default Admin;
