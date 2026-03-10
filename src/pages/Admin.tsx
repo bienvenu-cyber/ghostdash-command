@@ -140,7 +140,17 @@ const Admin = () => {
   };
 
   const activateSubscription = async () => {
-    if (!selectedUser) return;
+    if (!selectedUser) {
+      console.error('[Admin] No user selected for activation');
+      return;
+    }
+
+    console.log('[Admin] Activating subscription for:', {
+      userId: selectedUser.id,
+      email: selectedUser.email,
+      plan: selectedPlanForActivation,
+      existingSubId: selectedUser.sub_id
+    });
 
     const planConfig = {
       monthly: { amount: 79, days: 30 },
@@ -150,25 +160,48 @@ const Admin = () => {
     const config = planConfig[selectedPlanForActivation];
     const expiresAt = new Date(Date.now() + config.days * 24 * 60 * 60 * 1000).toISOString();
 
-    if (selectedUser.sub_id) {
-      await supabase.from("subscriptions").update({
-        status: "active",
-        amount: config.amount,
-        expires_at: expiresAt
-      }).eq("id", selectedUser.sub_id);
-    } else {
-      await supabase.from("subscriptions").insert({
-        user_id: selectedUser.id,
-        status: "active" as any,
-        amount: config.amount,
-        expires_at: expiresAt
-      });
-    }
+    console.log('[Admin] Plan config:', { amount: config.amount, days: config.days, expiresAt });
 
-    toast.success(`${selectedPlanForActivation === "monthly" ? "Monthly" : "Annual"} subscription activated!`);
-    setShowActivateModal(false);
-    setSelectedUser(null);
-    fetchUsers();
+    try {
+      if (selectedUser.sub_id) {
+        console.log('[Admin] Updating existing subscription:', selectedUser.sub_id);
+        const { data, error } = await supabase.from("subscriptions").update({
+          status: "active",
+          amount: config.amount,
+          expires_at: expiresAt
+        }).eq("id", selectedUser.sub_id).select();
+
+        if (error) {
+          console.error('[Admin] Update error:', error);
+          toast.error(`Error: ${error.message}`);
+          return;
+        }
+        console.log('[Admin] Update success:', data);
+      } else {
+        console.log('[Admin] Creating new subscription');
+        const { data, error } = await supabase.from("subscriptions").insert({
+          user_id: selectedUser.id,
+          status: "active" as any,
+          amount: config.amount,
+          expires_at: expiresAt
+        }).select();
+
+        if (error) {
+          console.error('[Admin] Insert error:', error);
+          toast.error(`Error: ${error.message}`);
+          return;
+        }
+        console.log('[Admin] Insert success:', data);
+      }
+
+      toast.success(`${selectedPlanForActivation === "monthly" ? "Monthly" : "Annual"} subscription activated!`);
+      setShowActivateModal(false);
+      setSelectedUser(null);
+      fetchUsers();
+    } catch (err) {
+      console.error('[Admin] Unexpected error:', err);
+      toast.error('Unexpected error occurred');
+    }
   };
 
   const extendSubscription = async (subId: string, days: number) => {
