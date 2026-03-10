@@ -1,5 +1,7 @@
 import { motion } from "framer-motion";
 import { DollarSign, Users, MessageSquare, BarChart3, Camera } from "lucide-react";
+import mockupAnalytics from "@/assets/mockup-analytics.jpg";
+import { OptimizedImage } from "@/components/OptimizedImage";
 
 const features = [
   { icon: DollarSign, title: "Editable Earnings & Revenue", desc: "Set any revenue figure, customize daily/monthly breakdowns with realistic formatting." },
@@ -27,7 +29,7 @@ const Features = () => (
         </p>
       </motion.div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-16">
         {features.map((f, i) => (
           <motion.div
             key={f.title}
@@ -43,6 +45,28 @@ const Features = () => (
           </motion.div>
         ))}
       </div>
+
+      {/* Analytics Dashboard Preview */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+        className="relative group max-w-5xl mx-auto"
+      >
+        {/* Glow effect */}
+        <div className="absolute -inset-1 bg-gradient-to-r from-primary/40 via-secondary/40 to-primary/40 rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+
+        {/* Image container */}
+        <div className="relative rounded-2xl overflow-hidden border-2 border-primary/20 shadow-2xl">
+          <OptimizedImage
+            src={mockupAnalytics}
+            alt="GhostDash analytics dashboard - Complete metrics control"
+            className="w-full h-auto"
+            aspectRatio="16/9"
+          />
+        </div>
+      </motion.div>
     </div>
   </section>
 );

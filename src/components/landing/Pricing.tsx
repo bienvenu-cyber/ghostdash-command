@@ -1,21 +1,12 @@
 import { motion } from "framer-motion";
 import { Check, Zap, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
-  const [telegramLink, setTelegramLink] = useState("https://t.me/ghostdashadmin");
-
-  useEffect(() => {
-    supabase.from("admin_settings").select("telegram_username").limit(1).single()
-      .then(({ data }) => {
-        if (data?.telegram_username) setTelegramLink(`https://t.me/${data.telegram_username}`);
-      });
-  }, []);
-
   const plans = [
     {
+      id: "monthly",
       name: "Monthly",
       price: "€79",
       period: "/month",
@@ -24,11 +15,12 @@ const Pricing = () => {
       popular: false,
     },
     {
-      name: "Elite Lifetime",
-      price: "€200",
-      period: "one-time",
+      id: "annual",
+      name: "Elite Annual",
+      price: "€474",
+      period: "/year",
       icon: Crown,
-      features: ["Everything in Monthly", "Lifetime access", "Priority support", "All future updates", "Early access to new features"],
+      features: ["Everything in Monthly", "12 months access", "6 months FREE", "Priority support", "All future updates", "Early access to new features"],
       popular: true,
     },
   ];
@@ -82,11 +74,11 @@ const Pricing = () => {
               </ul>
               <Button
                 asChild
-                className={`w-full py-6 text-base font-semibold ${plan.popular ? "bg-secondary hover:bg-secondary/90 glow-blue" : "bg-muted hover:bg-muted/80 text-foreground"}`}
+                className={`w-full py-6 text-base font-semibold ${plan.popular ? "bg-secondary hover:bg-secondary/90 glow-blue" : "bg-secondary/80 hover:bg-secondary text-secondary-foreground"}`}
               >
-                <a href={telegramLink} target="_blank" rel="noopener noreferrer">
+                <Link to={`/payment?plan=${plan.id}`}>
                   Choose Plan
-                </a>
+                </Link>
               </Button>
             </motion.div>
           ))}
@@ -98,7 +90,7 @@ const Pricing = () => {
           viewport={{ once: true }}
           className="text-center text-xs text-muted-foreground/60 mt-8"
         >
-          Secure Crypto Payment via Telegram • BTC / ETH / USDT • Lifetime updates included on Elite tier
+          Secure Crypto Payment • BTC / ETH / USDT • Elite Annual: Save 40% — Get 6 Months Free
         </motion.p>
       </div>
     </section>
