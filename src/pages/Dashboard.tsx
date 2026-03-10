@@ -12,17 +12,22 @@ import { useAutoLogout } from "@/hooks/useAutoLogout";
 const Dashboard = () => {
   const { user, signOut, isAdmin } = useAuth();
   const [subStatus, setSubStatus] = useState<string>("pending");
-  const [subPlan, setSubPlan] = useState<string>("");
 
   // Auto logout after 30 minutes of inactivity
   useAutoLogout();
 
   useEffect(() => {
     if (!user) return;
-    supabase.from("subscriptions").select("status").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1).single()
-      .then(({ data }) => {
+    supabase.from("subscriptions").select("status").eq("user_id", user.id).order("created_at", { ascending: false }).limit(1).maybeSingle()
+      .then(({ data, error }) => {
+        // Ignore 403 errors (user has no subscription yet)
+        if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching subscription:', error);
+        }
         if (data) {
           setSubStatus(data.status);
+        } else {
+          setSubStatus("pending"); // Default status if no subscription
         }
       });
   }, [user]);
