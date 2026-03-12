@@ -1,4 +1,5 @@
 import { Ghost } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Footer = () => (
   <footer className="py-12 border-t border-border/30">
@@ -8,10 +9,11 @@ const Footer = () => (
           <Ghost className="h-5 w-5 text-primary" />
           <span className="font-bold tracking-tight-custom">Ghost<span className="text-primary">dash</span></span>
         </div>
-        <div className="flex gap-6 text-sm text-muted-foreground">
+        <div className="flex flex-wrap gap-6 text-sm text-muted-foreground">
           <a href="https://t.me/ghostdashadmin" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">Telegram</a>
-          <a href="#" className="hover:text-foreground transition-colors">Terms of Service</a>
-          <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
+          <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
+          <Link to="/terms" className="hover:text-foreground transition-colors">Terms of Service</Link>
+          <Link to="/blog" className="hover:text-foreground transition-colors">Blog</Link>
         </div>
         <p className="text-xs text-muted-foreground/50">© {new Date().getFullYear()} Ghostdash. All rights reserved.</p>
       </div>

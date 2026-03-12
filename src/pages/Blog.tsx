@@ -1,6 +1,7 @@
 import Navbar from "@/components/landing/Navbar";
 import Footer from "@/components/landing/Footer";
 import BlogVideoHero from "@/components/blog/BlogVideoHero";
+import BlogArticlesGrid from "@/components/blog/BlogArticlesGrid";
 import { SEO } from "@/components/SEO";
 
 const Blog = () => {
@@ -18,6 +19,7 @@ const Blog = () => {
           videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
           videoType="youtube"
         />
+        <BlogArticlesGrid />
         <Footer />
       </div>
     </>

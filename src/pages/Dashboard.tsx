@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Ghost, ExternalLink, LogOut, User, CreditCard, Sparkles, Calendar, Clock, Edit2, Check, X } from "lucide-react";
+import { Ghost, ExternalLink, LogOut, User, CreditCard, Sparkles, Calendar, Clock, Edit2, Check, X, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
