@@ -92,8 +92,8 @@ const Dashboard = () => {
   const daysRemaining = getDaysRemaining();
 
   const handleOpenDashboard = () => {
-    // Use env var if set, otherwise fallback to production dashboard URL
-    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://fansboard.vercel.app";
+    // Use env var if set, otherwise fallback to OnlyFans earnings page
+    const dashboardUrl = import.meta.env.VITE_DASHBOARD_URL || "https://www.ȯnlyfans.com/my/statistics/overview/earnings";
 
     // For mobile compatibility, use location.href instead of window.open if popup is blocked
     const newWindow = window.open(dashboardUrl, "_blank", "noopener,noreferrer");

@@ -34,6 +34,17 @@ interface Stats {
   expiringThisWeek: number;
 }
 
+interface PricingPlan {
+  id: string;
+  plan_name: string;
+  price: number;
+  currency: string;
+  duration_days: number;
+  description: string;
+  features: string[];
+  is_active: boolean;
+}
+
 const Admin = () => {
   const { signOut } = useAuth();
   const [users, setUsers] = useState<UserRow[]>([]);
@@ -43,7 +54,6 @@ const Admin = () => {
   const [showScreenshot, setShowScreenshot] = useState(false);
   const [showActivateModal, setShowActivateModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<UserRow | null>(null);
-  const [selectedPlanForActivation, setSelectedPlanForActivation] = useState<"monthly" | "annual">("monthly");
   const [stats, setStats] = useState<Stats>({
     totalRevenue: 0,
     activeUsers: 0,
@@ -58,6 +68,14 @@ const Admin = () => {
   const [ethAddress, setEthAddress] = useState("");
   const [usdtAddress, setUsdtAddress] = useState("");
   const [settingsId, setSettingsId] = useState<string | null>(null);
+
+  // Pricing
+  const [pricing, setPricing] = useState<PricingPlan | null>(null);
+  const [editingPrice, setEditingPrice] = useState<string>("");
+  const [editingDays, setEditingDays] = useState<string>("");
+  const [editingDescription, setEditingDescription] = useState<string>("");
+  const [editingFeatures, setEditingFeatures] = useState<string>("");
+  const [savingPricing, setSavingPricing] = useState(false);
 
   const fetchUsers = async () => {
     const { data: profiles } = await supabase.from("profiles").select("id, email, display_name, created_at");
@@ -114,9 +132,59 @@ const Admin = () => {
     }
   };
 
+  const fetchPricing = async () => {
+    try {
+      const { data } = await supabase
+        .from("pricing" as any)
+        .select("*")
+        .eq("is_active", true)
+        .limit(1)
+        .single();
+      if (data && !('error' in data)) {
+        setPricing(data as any as PricingPlan);
+        setEditingPrice((data as any).price.toString());
+        setEditingDays((data as any).duration_days.toString());
+        setEditingDescription((data as any).description || "");
+        setEditingFeatures(((data as any).features || []).join("\n"));
+      }
+    } catch (err) {
+      console.error("Error fetching pricing:", err);
+    }
+  };
+
+  const savePricing = async () => {
+    if (!pricing) return;
+    setSavingPricing(true);
+    try {
+      const features = editingFeatures.split("\n").filter(f => f.trim());
+      const { error } = await supabase
+        .from("pricing" as any)
+        .update({
+          price: parseFloat(editingPrice),
+          duration_days: parseInt(editingDays),
+          description: editingDescription,
+          features: features,
+          updated_at: new Date().toISOString()
+        })
+        .eq("id", pricing.id);
+
+      if (error) {
+        toast.error(`Error: ${error.message}`);
+      } else {
+        toast.success("Pricing updated successfully");
+        await fetchPricing();
+      }
+    } catch (err) {
+      toast.error("Failed to save pricing");
+    } finally {
+      setSavingPricing(false);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
     fetchSettings();
+    fetchPricing();
   }, []);
 
   const toggleSubscription = async (userId: string, subId: string | null, currentStatus: string) => {
@@ -163,23 +231,18 @@ const Admin = () => {
     console.log('[Admin] ✅ User selected:', {
       userId: selectedUser.id,
       email: selectedUser.email,
-      plan: selectedPlanForActivation,
       existingSubId: selectedUser.sub_id,
       currentStatus: selectedUser.sub_status
     });
 
-    const planConfig = {
-      monthly: { amount: 79, days: 30 },
-      annual: { amount: 474, days: 365 }
-    };
-
-    const config = planConfig[selectedPlanForActivation];
-    const expiresAt = new Date(Date.now() + config.days * 24 * 60 * 60 * 1000).toISOString();
+    // Use pricing from DB, fallback to default
+    const amount = pricing?.price || 79;
+    const days = pricing?.duration_days || 30;
+    const expiresAt = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toISOString();
 
     console.log('[Admin] 📋 Plan configuration:', {
-      selectedPlan: selectedPlanForActivation,
-      amount: config.amount,
-      days: config.days,
+      amount: amount,
+      days: days,
       expiresAt: expiresAt,
       expiresAtReadable: new Date(expiresAt).toLocaleString('fr-FR')
     });
@@ -189,13 +252,13 @@ const Admin = () => {
         console.log('[Admin] 🔄 Updating existing subscription:', selectedUser.sub_id);
         console.log('[Admin] 📤 Sending UPDATE request with:', {
           status: "active",
-          amount: config.amount,
+          amount: amount,
           expires_at: expiresAt
         });
 
         const { data, error } = await supabase.from("subscriptions").update({
           status: "active",
-          amount: config.amount,
+          amount: amount,
           expires_at: expiresAt
         }).eq("id", selectedUser.sub_id).select();
 
@@ -216,14 +279,14 @@ const Admin = () => {
         console.log('[Admin] 📤 Sending INSERT request with:', {
           user_id: selectedUser.id,
           status: "active",
-          amount: config.amount,
+          amount: amount,
           expires_at: expiresAt
         });
 
         const { data, error } = await supabase.from("subscriptions").insert({
           user_id: selectedUser.id,
           status: "active" as any,
-          amount: config.amount,
+          amount: amount,
           expires_at: expiresAt
         }).select();
 
@@ -242,7 +305,7 @@ const Admin = () => {
       }
 
       console.log('[Admin] 🎉 Activation completed successfully');
-      toast.success(`${selectedPlanForActivation === "monthly" ? "Monthly" : "Annual"} subscription activated!`);
+      toast.success("Monthly subscription activated!");
 
       console.log('[Admin] 🔄 Refreshing user list...');
       setShowActivateModal(false);
@@ -265,11 +328,10 @@ const Admin = () => {
       return;
     }
 
-    // Determine plan based on amount
-    const isAnnual = currentAmount >= 400; // Annual is 474€
-    const days = isAnnual ? 365 : 30;
+    // Use pricing from DB
+    const days = pricing?.duration_days || 30;
 
-    console.log('[Admin] 📋 Renewal plan:', { isAnnual, days, currentAmount });
+    console.log('[Admin] 📋 Renewal plan:', { days, currentAmount });
 
     // Calculate new expiry from current expiry date (not today)
     const currentExpiry = user.sub_expires ? new Date(user.sub_expires) : new Date();
@@ -491,6 +553,7 @@ const Admin = () => {
               <TabsTrigger value="pending">Pending ({pendingUsers.length})</TabsTrigger>
               <TabsTrigger value="active">Active ({activeUsers.length})</TabsTrigger>
               <TabsTrigger value="all">All Users</TabsTrigger>
+              <TabsTrigger value="pricing">Pricing</TabsTrigger>
               <TabsTrigger value="settings">Settings</TabsTrigger>
             </TabsList>
             <div className="flex gap-2">
@@ -701,6 +764,84 @@ const Admin = () => {
             </Card>
           </TabsContent>
 
+          <TabsContent value="pricing">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <DollarSign className="w-5 h-5" />
+                  Pricing Management
+                </CardTitle>
+                <CardDescription>Configure the monthly subscription plan.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {pricing ? (
+                  <>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Plan Name</label>
+                      <Input
+                        value={pricing.plan_name}
+                        disabled
+                        className="bg-muted border-border"
+                      />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Price (€)</label>
+                        <Input
+                          type="number"
+                          value={editingPrice}
+                          onChange={(e) => setEditingPrice(e.target.value)}
+                          placeholder="79"
+                          className="bg-background border-border"
+                          step="0.01"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium mb-2 block">Duration (days)</label>
+                        <Input
+                          type="number"
+                          value={editingDays}
+                          onChange={(e) => setEditingDays(e.target.value)}
+                          placeholder="30"
+                          className="bg-background border-border"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Description</label>
+                      <Input
+                        value={editingDescription}
+                        onChange={(e) => setEditingDescription(e.target.value)}
+                        placeholder="Full dashboard access with all features"
+                        className="bg-background border-border"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium mb-2 block">Features (one per line)</label>
+                      <textarea
+                        value={editingFeatures}
+                        onChange={(e) => setEditingFeatures(e.target.value)}
+                        placeholder="Full dashboard access&#10;All metrics editable&#10;Screenshot export"
+                        className="w-full p-2 rounded-md bg-background border border-border text-sm font-mono"
+                        rows={5}
+                      />
+                    </div>
+                    <Button
+                      onClick={savePricing}
+                      disabled={savingPricing}
+                      className="bg-secondary hover:bg-secondary/90 glow-blue"
+                    >
+                      <Save className="h-4 w-4 mr-2" />
+                      {savingPricing ? "Saving..." : "Save Pricing"}
+                    </Button>
+                  </>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Loading pricing...</p>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
           <TabsContent value="settings">
             <Card>
               <CardHeader>
@@ -775,49 +916,25 @@ const Admin = () => {
             </DialogHeader>
             <div className="space-y-4 py-4">
               <p className="text-sm text-muted-foreground">
-                Select the plan for <span className="font-medium text-foreground">{selectedUser?.email}</span>
+                Activating monthly plan for <span className="font-medium text-foreground">{selectedUser?.email}</span>
               </p>
 
-              <div className="space-y-3">
-                <Card
-                  onClick={() => setSelectedPlanForActivation("monthly")}
-                  className={`p-4 cursor-pointer transition-all ${selectedPlanForActivation === "monthly"
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/30"
-                    }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold">Monthly Plan</p>
-                      <p className="text-sm text-muted-foreground">€79 / 30 days</p>
-                    </div>
-                    {selectedPlanForActivation === "monthly" && (
-                      <Check className="h-5 w-5 text-primary" />
+              <Card className="p-4 border-primary bg-primary/5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="font-bold">Monthly Plan</p>
+                    <p className="text-sm text-muted-foreground">
+                      €{pricing?.price || 79} / {pricing?.duration_days || 30} days
+                    </p>
+                    {pricing?.description && (
+                      <p className="text-xs text-muted-foreground mt-2">
+                        {pricing.description}
+                      </p>
                     )}
                   </div>
-                </Card>
-
-                <Card
-                  onClick={() => setSelectedPlanForActivation("annual")}
-                  className={`p-4 cursor-pointer transition-all ${selectedPlanForActivation === "annual"
-                      ? "border-primary bg-primary/5"
-                      : "border-border hover:border-primary/30"
-                    }`}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-bold">Annual Plan</p>
-                      <p className="text-sm text-muted-foreground">€474 / 365 days</p>
-                      <Badge className="mt-1 bg-green-500/20 text-green-400 border-green-500/50 text-xs">
-                        6 months FREE
-                      </Badge>
-                    </div>
-                    {selectedPlanForActivation === "annual" && (
-                      <Check className="h-5 w-5 text-primary" />
-                    )}
-                  </div>
-                </Card>
-              </div>
+                  <Check className="h-5 w-5 text-primary" />
+                </div>
+              </Card>
 
               <div className="flex gap-3 pt-4">
                 <Button variant="outline" onClick={() => setShowActivateModal(false)} className="flex-1">
