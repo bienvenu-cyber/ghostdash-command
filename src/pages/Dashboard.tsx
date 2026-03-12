@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Ghost, ExternalLink, LogOut, User, CreditCard, Sparkles, Calendar, Clock, Edit2, Check, X } from "lucide-react";
+import { Ghost, ExternalLink, LogOut, User, CreditCard, Sparkles, Calendar, Clock, Edit2, Check, X, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -122,6 +122,12 @@ const Dashboard = () => {
             <span className="font-bold tracking-tight-custom">Ghost<span className="text-primary">dash</span></span>
           </Link>
           <div className="flex items-center gap-4">
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/blog" className="flex items-center gap-1.5">
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">Blog</span>
+              </Link>
+            </Button>
             {isAdmin && (
               <Button asChild variant="ghost" size="sm">
                 <Link to="/admin">Admin Panel</Link>
