@@ -1,7 +1,7 @@
-import { Navbar } from "@/components/landing/Navbar";
-import { Footer } from "@/components/landing/Footer";
+import Navbar from "@/components/landing/Navbar";
+import Footer from "@/components/landing/Footer";
 import BlogVideoHero from "@/components/blog/BlogVideoHero";
-import SEO from "@/components/SEO";
+import { SEO } from "@/components/SEO";
 
 const Blog = () => {
   return (
