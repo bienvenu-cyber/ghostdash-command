@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export type Transaction = {
   date: string;
@@ -167,6 +168,8 @@ interface AppContextType {
   setBalanceEditFormOpen: (open: boolean) => void;
   isLoading: boolean;
   setIsLoading: (loading: boolean) => void;
+  isAuthenticated: boolean;
+  setIsAuthenticated: (auth: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -206,10 +209,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // Only show loader if not already shown in this session
     return !sessionStorage.getItem('loaderShown');
   });
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
+
+  // Check authentication on mount
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session?.user) {
+        // Check if user has active subscription
+        const { data: subData } = await supabase
+          .from('subscriptions')
+          .select('status')
+          .eq('user_id', session.user.id)
+          .eq('status', 'active')
+          .maybeSingle();
+
+        setIsAuthenticated(!!subData);
+      }
+      setAuthChecked(true);
+    };
+
+    checkAuth();
+  }, []);
 
   // Hide loader after 1.5 seconds and mark as shown
   useEffect(() => {
-    if (isLoading) {
+    if (isLoading && authChecked) {
       const timer = setTimeout(() => {
         setIsLoading(false);
         sessionStorage.setItem('loaderShown', 'true');
@@ -217,7 +244,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, [isLoading]);
+  }, [isLoading, authChecked]);
 
   // Apply theme class immediately on mount and on every state change
   useEffect(() => {
@@ -258,7 +285,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isBalanceEditFormOpen,
       setBalanceEditFormOpen,
       isLoading,
-      setIsLoading
+      setIsLoading,
+      isAuthenticated,
+      setIsAuthenticated
     }}>
       {children}
     </AppContext.Provider>

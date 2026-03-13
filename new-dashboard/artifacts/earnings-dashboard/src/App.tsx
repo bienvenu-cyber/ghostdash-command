@@ -8,6 +8,7 @@ import ChartEditForm from "@/components/ChartEditForm";
 import AllTimeEarningsForm from "@/components/AllTimeEarningsForm";
 import BalanceEditForm from "@/components/BalanceEditForm";
 import LoadingScreen from "@/components/LoadingScreen";
+import LoginModal from "@/components/LoginModal";
 import Statistics from "@/pages/Statistics";
 import Statements from "@/pages/Statements";
 import { AppProvider, useAppContext } from "@/context/AppContext";
@@ -15,10 +16,14 @@ import { AppProvider, useAppContext } from "@/context/AppContext";
 const queryClient = new QueryClient();
 
 function Router() {
-  const { state, isLoading } = useAppContext();
+  const { state, isLoading, isAuthenticated, setIsAuthenticated } = useAppContext();
 
   if (isLoading) {
     return <LoadingScreen />;
+  }
+
+  if (!isAuthenticated) {
+    return <LoginModal open={true} onSuccess={() => setIsAuthenticated(true)} />;
   }
 
   return (
