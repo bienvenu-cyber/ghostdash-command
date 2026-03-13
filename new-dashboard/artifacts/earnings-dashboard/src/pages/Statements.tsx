@@ -58,11 +58,11 @@ export default function Statements() {
 
   const BalanceCard = () => (
     <div
-      className="border border-[#e5e5e5] dark:border-[#333] rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#222]"
+      className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-[hsl(var(--card))]"
       onClick={() => setBalanceEditFormOpen(true)}
     >
       <div className="flex justify-between items-center">
-        <div className="text-[12px] text-[#666666] dark:text-[#999] font-bold tracking-wider">CURRENT BALANCE</div>
+        <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] font-bold tracking-wider">CURRENT BALANCE</div>
         <div className="flex items-center gap-1">
           <span className="text-[18px] font-bold text-black dark:text-white">
             ${state.currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -70,10 +70,10 @@ export default function Statements() {
           <ChevronUp className="w-4 h-4 text-black dark:text-white" />
         </div>
       </div>
-      <div className="h-[1px] bg-[#e5e5e5] dark:bg-[#333] w-full" />
+      <div className="h-[1px] bg-[hsl(var(--border))] dark:bg-[hsl(var(--border))] w-full" />
       <div className="flex justify-between items-center">
-        <div className="text-[12px] text-[#666666] dark:text-[#999] flex items-center gap-1">
-          PENDING BALANCE <span className="text-[10px] w-3 h-3 rounded-full border border-[#999] flex items-center justify-center text-[#999]">i</span>
+        <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] flex items-center gap-1">
+          PENDING BALANCE <span className="text-[10px] w-3 h-3 rounded-full border border-[hsl(var(--muted-foreground))] flex items-center justify-center text-[hsl(var(--muted-foreground))]">i</span>
         </div>
         <div className="text-[15px] font-medium text-black dark:text-white">
           ${state.pendingBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -84,8 +84,8 @@ export default function Statements() {
 
   const EarningStatsContent = () => (
     <>
-      <div className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#333] rounded-xl overflow-hidden mb-6 shadow-sm">
-        <div className="p-5 border-b border-[#e5e5e5] dark:border-[#333]">
+      <div className="bg-white dark:bg-[hsl(var(--card))] border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-xl overflow-hidden mb-6 shadow-sm">
+        <div className="p-5 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
           <div className="flex justify-between items-center mb-4">
             <div className="text-[14px] font-bold text-black dark:text-white border-b-2 border-black dark:border-white pb-1 inline-block">All time</div>
             <div className="flex items-center gap-1">
@@ -105,7 +105,7 @@ export default function Statements() {
             onTouchEnd={handleChartDoubleTap}
             title="Double-cliquer pour éditer"
           >
-            <div className="absolute top-1 right-1 text-[9px] text-[#999] bg-white/80 dark:bg-black/50 px-1.5 py-0.5 rounded z-10 pointer-events-none">
+            <div className="absolute top-1 right-1 text-[9px] text-[hsl(var(--muted-foreground))] bg-white/80 dark:bg-black/50 px-1.5 py-0.5 rounded z-10 pointer-events-none">
               Double-clic pour éditer
             </div>
             <AreaChart width={Math.min(typeof window !== 'undefined' ? window.innerWidth - 60 : 600, 700)} height={130} data={state.allTimeChartData} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
@@ -119,14 +119,14 @@ export default function Statements() {
                   <stop offset="95%" stopColor="#00AFF0" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: '#999999' }} dy={10} />
+              <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} dy={10} />
               <Area type="linear" dataKey="gross" stroke="#FF6B35" strokeWidth={2} fillOpacity={1} fill="url(#colorGross)" dot={false} />
-              <Area type="linear" dataKey="net" stroke="#00AFF0" strokeWidth={2} fillOpacity={1} fill="url(#colorNet)" dot={false} />
+              <Area type="linear" dataKey="net" stroke="hsl(var(--primary))" strokeWidth={2} fillOpacity={1} fill="url(#colorNet)" dot={false} />
             </AreaChart>
           </div>
 
-          <div className="border border-[#e5e5e5] dark:border-[#333] rounded-md p-3 flex items-center gap-3 mb-5">
-            <Calendar className="w-5 h-5 text-[#666666] dark:text-[#999] flex-shrink-0" />
+          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-md p-3 flex items-center gap-3 mb-5">
+            <Calendar className="w-5 h-5 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] flex-shrink-0" />
             <span className="text-[14px] text-black dark:text-white">
               From <EditableValue value={state.startDate} onChange={(v) => updateState({ startDate: v })} /> To{' '}
               {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
@@ -138,7 +138,7 @@ export default function Statements() {
               <div key={i} className="flex items-center justify-between text-[13px]">
                 <div className="flex items-center gap-2 w-[130px] flex-shrink-0">
                   <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color === '#000000' && state.theme === 'dark' ? '#fff' : item.color }} />
-                  <span className="text-[#666666] dark:text-[#aaa]">{item.label}</span>
+                  <span className="text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]">{item.label}</span>
                 </div>
                 <div className="text-right flex-1 text-black dark:text-white font-medium">
                   <EditableValue value={item.gross} onChange={(v) => handleBreakdownEdit(i, 'gross', v)} />
@@ -148,14 +148,14 @@ export default function Statements() {
                 </div>
               </div>
             ))}
-            <div className="flex items-center justify-between text-[13px] pt-3 mt-1 border-t border-[#e5e5e5] dark:border-[#333]">
+            <div className="flex items-center justify-between text-[13px] pt-3 mt-1 border-t border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
               <div className="font-bold text-black dark:text-white w-[130px]">TOTAL</div>
               <div className="flex-1 text-right">
-                <span className="text-[#999999] text-[11px] mr-1">GROSS</span>
+                <span className="text-[hsl(var(--muted-foreground))] text-[11px] mr-1">GROSS</span>
                 <span className="font-bold text-black dark:text-white">$119,461.84</span>
               </div>
               <div className="flex-1 text-right">
-                <span className="text-[#999999] text-[11px] mr-1">NET</span>
+                <span className="text-[hsl(var(--muted-foreground))] text-[11px] mr-1">NET</span>
                 <span className="font-bold text-black dark:text-white">
                   ${state.allTimeTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
@@ -165,15 +165,15 @@ export default function Statements() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[#1a1a1a] border border-[#e5e5e5] dark:border-[#333] rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-white dark:bg-[hsl(var(--card))] border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-xl overflow-hidden shadow-sm">
         {state.monthlyData.map((item, i) => (
-          <div key={i} className="flex justify-between items-center p-4 border-b border-[#e5e5e5] dark:border-[#333] last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#222] transition-colors">
+          <div key={i} className="flex justify-between items-center p-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-[hsl(var(--card))] transition-colors">
             <div className="text-[14px] font-medium text-black dark:text-white capitalize">{item.month}</div>
             <div className="flex items-center gap-3">
               <span className="text-[14px] font-bold text-black dark:text-white">
                 <EditableValue value={item.amount} onChange={(v) => handleMonthlyEdit(i, v)} />
               </span>
-              <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
+              <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
             </div>
           </div>
         ))}
@@ -182,16 +182,16 @@ export default function Statements() {
   );
 
   return (
-    <div className="flex h-full w-full bg-[#fafafa] dark:bg-[#0f0f0f] overflow-hidden flex-col md:flex-row">
+    <div className="flex h-full w-full bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] overflow-hidden flex-col md:flex-row">
 
       {/* Mobile layout: single scrollable column */}
-      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-white dark:bg-[#1a1a1a] pb-20">
-        <div className="flex justify-between items-center px-4 py-4 border-b border-[#e5e5e5] dark:border-[#333]">
+      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-white dark:bg-[hsl(var(--card))] pb-20">
+        <div className="flex justify-between items-center px-4 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
           <div className="flex items-center gap-2">
             <ArrowLeft className="w-5 h-5 text-black dark:text-white" />
             <h1 className="text-[17px] font-bold text-black dark:text-white uppercase tracking-tight">STATEMENTS</h1>
           </div>
-          <HelpCircle className="w-5 h-5 text-[#999999]" />
+          <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
         </div>
 
         <div className="px-4 py-4 flex flex-col gap-4">
@@ -202,18 +202,18 @@ export default function Statements() {
 
           <BalanceCard />
 
-          <div className="border border-[#e5e5e5] dark:border-[#333] rounded-lg p-3 flex justify-between items-center">
+          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-3 flex justify-between items-center">
             <span className="text-[14px] text-black dark:text-white">Manual payouts</span>
-            <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
+            <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
           </div>
 
-          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
         </div>
 
         {/* Mobile icon tab bar */}
-        <div className="flex items-center justify-around px-2 py-3 border-t border-[#e5e5e5] dark:border-[#333] bg-white dark:bg-[#1a1a1a]">
+        <div className="flex items-center justify-around px-2 py-3 border-t border-[hsl(var(--border))] dark:border-[hsl(var(--border))] bg-white dark:bg-[hsl(var(--card))]">
           {menuItems.map((item) => {
             const isActive = activeMenu === item.id;
             const Icon = item.icon;
@@ -230,24 +230,24 @@ export default function Statements() {
           })}
         </div>
 
-        <div className="px-4 py-5 bg-[#f5f5f5] dark:bg-[#0f0f0f]">
+        <div className="px-4 py-5 bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-[13px] font-bold text-[#666666] dark:text-[#999] uppercase tracking-wider">EARNING STATISTICS</h2>
-            <div className="text-[11px] text-[#999999]">UTC time zone</div>
+            <h2 className="text-[13px] font-bold text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] uppercase tracking-wider">EARNING STATISTICS</h2>
+            <div className="text-[11px] text-[hsl(var(--muted-foreground))]">UTC time zone</div>
           </div>
           <EarningStatsContent />
         </div>
       </div>
 
       {/* Desktop: Left Panel */}
-      <div className="hidden md:flex w-[280px] flex-shrink-0 bg-white dark:bg-[#1a1a1a] border-r border-[#e5e5e5] dark:border-[#333] flex-col h-full overflow-y-auto">
+      <div className="hidden md:flex w-[280px] flex-shrink-0 bg-white dark:bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] dark:border-[hsl(var(--border))] flex-col h-full overflow-y-auto">
         <div className="p-5 flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 cursor-pointer group">
               <ArrowLeft className="w-5 h-5 text-black dark:text-white group-hover:-translate-x-1 transition-transform" />
               <h1 className="text-[17px] font-bold text-black dark:text-white uppercase tracking-tight">STATEMENTS</h1>
             </div>
-            <HelpCircle className="w-5 h-5 text-[#999999] cursor-pointer" />
+            <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))] cursor-pointer" />
           </div>
 
           <div className="bg-[#fffcf0] dark:bg-[#2a2410] border border-[#f5e6b3] dark:border-[#4a3f1c] rounded-lg p-3 flex items-center gap-2">
@@ -257,12 +257,12 @@ export default function Statements() {
 
           <BalanceCard />
 
-          <div className="border border-[#e5e5e5] dark:border-[#333] rounded-lg p-3 flex justify-between items-center cursor-pointer">
+          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-3 flex justify-between items-center cursor-pointer">
             <span className="text-[14px] text-black dark:text-white">Manual payouts</span>
-            <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
+            <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
           </div>
 
-          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
 
@@ -287,11 +287,11 @@ export default function Statements() {
       </div>
 
       {/* Desktop: Right Panel */}
-      <div className="hidden md:flex flex-1 flex-col h-full bg-[#f5f5f5] dark:bg-[#0f0f0f] overflow-y-auto">
+      <div className="hidden md:flex flex-1 flex-col h-full bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] overflow-y-auto">
         <div className="p-6 max-w-[800px] w-full mx-auto pb-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-[13px] font-bold text-[#666666] dark:text-[#999] uppercase tracking-wider">EARNING STATISTICS</h2>
-            <div className="text-[12px] text-[#999999]">Date/Time shown in UTC time zone</div>
+            <h2 className="text-[13px] font-bold text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] uppercase tracking-wider">EARNING STATISTICS</h2>
+            <div className="text-[12px] text-[hsl(var(--muted-foreground))]">Date/Time shown in UTC time zone</div>
           </div>
           <EarningStatsContent />
         </div>
