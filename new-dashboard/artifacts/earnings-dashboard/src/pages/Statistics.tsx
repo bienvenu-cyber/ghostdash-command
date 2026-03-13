@@ -30,6 +30,7 @@ export default function Statistics() {
   const [location, setLocation] = useLocation();
   const activeTab = getTabFromPath(location);
   const { state, updateState, setChartEditFormOpen, setBalanceEditFormOpen } = useAppContext();
+  const [withdrawalOpen, setWithdrawalOpen] = useState(false);
 
   const lastTap = useRef<number>(0);
   const lastClick = useRef<number>(0);
