@@ -2,6 +2,7 @@ import React from 'react';
 import { Home, Bell, Plus, MessageSquare, Camera } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { useAppContext } from '@/context/AppContext';
+import { cn } from '@/lib/utils';
 
 export default function BottomNav() {
   const [location, setLocation] = useLocation();
@@ -27,12 +28,27 @@ export default function BottomNav() {
   };
 
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 h-[56px] bg-white dark:bg-[#1a1a1a] border-t border-[#e5e5e5] dark:border-[#333] flex items-center justify-between px-6 z-50">
-      <button onClick={handleHomeClick} className="text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white transition-colors">
+    <div className={cn(
+      "md:hidden fixed bottom-0 left-0 right-0 h-[56px] border-t flex items-center justify-between px-6 z-50 transition-colors",
+      state.theme === 'dark'
+        ? "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#333]"
+        : "bg-white border-gray-200"
+    )}>
+      <button onClick={handleHomeClick} className={cn(
+        "transition-colors",
+        state.theme === 'dark'
+          ? "text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white"
+          : "text-gray-600 hover:text-black"
+      )}>
         <Home className="w-6 h-6" />
       </button>
 
-      <button className="text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white transition-colors relative">
+      <button className={cn(
+        "transition-colors relative",
+        state.theme === 'dark'
+          ? "text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white"
+          : "text-gray-600 hover:text-black"
+      )}>
         <Bell className="w-6 h-6" />
         {state.notificationsCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center leading-none">
@@ -48,7 +64,12 @@ export default function BottomNav() {
         <Plus className="w-6 h-6" />
       </button>
 
-      <button className="text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white transition-colors">
+      <button className={cn(
+        "transition-colors",
+        state.theme === 'dark'
+          ? "text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white"
+          : "text-gray-600 hover:text-black"
+      )}>
         <MessageSquare className="w-6 h-6" />
       </button>
 

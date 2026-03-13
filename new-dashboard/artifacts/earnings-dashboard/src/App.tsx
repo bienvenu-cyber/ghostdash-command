@@ -9,13 +9,16 @@ import AllTimeEarningsForm from "@/components/AllTimeEarningsForm";
 import BalanceEditForm from "@/components/BalanceEditForm";
 import Statistics from "@/pages/Statistics";
 import Statements from "@/pages/Statements";
-import { AppProvider } from "@/context/AppContext";
+import { AppProvider, useAppContext } from "@/context/AppContext";
 
 const queryClient = new QueryClient();
 
 function Router() {
+  const { state } = useAppContext();
+
   return (
-    <div className="flex flex-col md:flex-row h-screen w-full overflow-hidden bg-[#fafafa] dark:bg-[#0f0f0f]">
+    <div className={`flex flex-col md:flex-row h-screen w-full overflow-hidden transition-colors ${state.theme === 'dark' ? 'bg-[#fafafa] dark:bg-[#0f0f0f]' : 'bg-[#fafafa]'
+      }`}>
       <Sidebar />
       <div className="flex-1 h-full overflow-hidden">
         <Switch>
@@ -29,7 +32,7 @@ function Router() {
           {/* Legacy & root redirects */}
           <Route path="/" component={Statistics} />
           <Route>
-            <div className="p-8 text-black dark:text-white">404 - Not Found</div>
+            <div className={`p-8 ${state.theme === 'dark' ? 'text-white' : 'text-black'}`}>404 - Not Found</div>
           </Route>
         </Switch>
       </div>
