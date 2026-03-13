@@ -75,8 +75,8 @@ export default function Statistics() {
         <div className="sticky top-0 bg-white dark:bg-[hsl(var(--card))] z-10">
           <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
             <div className="flex items-center gap-3">
-              <ArrowLeft className="w-5 h-5 text-black dark:text-white" />
-              <h1 className="text-lg md:text-xl font-bold text-black dark:text-white tracking-tight uppercase">STATISTICS</h1>
+              <ArrowLeft className="w-5 h-5 text-foreground dark:text-white" />
+              <h1 className="text-lg md:text-xl font-bold text-foreground dark:text-white tracking-tight uppercase">STATISTICS</h1>
             </div>
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
           </div>
