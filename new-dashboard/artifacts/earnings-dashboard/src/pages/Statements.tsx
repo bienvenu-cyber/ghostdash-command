@@ -185,8 +185,8 @@ export default function Statements() {
       <div className="md:hidden flex flex-col h-full overflow-y-auto bg-white dark:bg-[hsl(var(--card))] pb-20">
         <div className="flex justify-between items-center px-4 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
           <div className="flex items-center gap-2">
-            <ArrowLeft className="w-5 h-5 text-black dark:text-white" />
-            <h1 className="text-[17px] font-bold text-black dark:text-white uppercase tracking-tight">STATEMENTS</h1>
+            <ArrowLeft className="w-5 h-5 text-foreground dark:text-white" />
+            <h1 className="text-[17px] font-bold text-foreground dark:text-white uppercase tracking-tight">STATEMENTS</h1>
           </div>
           <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
         </div>
@@ -241,8 +241,8 @@ export default function Statements() {
         <div className="p-5 flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 cursor-pointer group">
-              <ArrowLeft className="w-5 h-5 text-black dark:text-white group-hover:-translate-x-1 transition-transform" />
-              <h1 className="text-[17px] font-bold text-black dark:text-white uppercase tracking-tight">STATEMENTS</h1>
+              <ArrowLeft className="w-5 h-5 text-foreground dark:text-white group-hover:-translate-x-1 transition-transform" />
+              <h1 className="text-[17px] font-bold text-foreground dark:text-white uppercase tracking-tight">STATEMENTS</h1>
             </div>
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))] cursor-pointer" />
           </div>
