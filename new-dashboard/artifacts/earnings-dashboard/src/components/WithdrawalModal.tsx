@@ -45,19 +45,19 @@ export default function WithdrawalModal({ open, onClose }: { open: boolean; onCl
       className="fixed inset-0 z-[120] flex items-center justify-center p-4"
       onClick={handleOverlayClick}
     >
-      <div className="absolute inset-0 bg-black/30 dark:bg-black/60" />
-      <div className="bg-white dark:bg-[#1a1a1a] rounded-xl shadow-2xl w-full max-w-sm relative z-10 border border-[#e5e5e5] dark:border-[#333] mb-16 md:mb-0">
+      <div className="absolute inset-0 bg-black/30" />
+      <div className="bg-card rounded-xl shadow-2xl w-full max-w-sm relative z-10 border border-border mb-16 md:mb-0">
         {modalState === 'success' ? (
           <div className="p-6 flex flex-col items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#00AFF0]/10 flex items-center justify-center">
-              <span className="text-[#00AFF0] text-2xl">✓</span>
+            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+              <span className="text-primary text-2xl">✓</span>
             </div>
-            <p className="text-[15px] font-bold text-black dark:text-white text-center">
+            <p className="text-[15px] font-bold text-foreground text-center">
               Payout request is being processed
             </p>
             <button
               onClick={handleClose}
-              className="mt-2 w-8 h-8 rounded-full border border-[#e5e5e5] dark:border-[#333] flex items-center justify-center text-[#666] dark:text-[#999] hover:text-black dark:hover:text-white hover:border-black dark:hover:border-white transition-colors"
+              className="mt-2 w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -67,23 +67,23 @@ export default function WithdrawalModal({ open, onClose }: { open: boolean; onCl
             <div className="p-5 pb-0">
               <div className="flex justify-between items-start mb-4">
                 <div>
-                  <h3 className="text-[13px] font-bold text-[#666] dark:text-[#999] uppercase tracking-wider">Manual Payouts</h3>
+                    <h3 className="text-[13px] font-bold text-muted-foreground uppercase tracking-wider">Manual Payouts</h3>
                   <div className="mt-2 flex items-baseline gap-1">
-                    <span className="text-[12px] text-[#999] uppercase">Max:</span>
-                    <span className="text-[18px] font-bold text-black dark:text-white">
+                      <span className="text-[12px] text-muted-foreground uppercase">Max:</span>
+                      <span className="text-[18px] font-bold text-foreground">
                       ${maxAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </span>
                   </div>
                 </div>
                 <button
                   onClick={handleClose}
-                  className="text-[#666] dark:text-[#999] hover:text-black dark:hover:text-white"
+                    className="text-muted-foreground hover:text-foreground"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <p className="text-[12px] text-[#999] mb-4">Minimum $20 USD</p>
+                <p className="text-[12px] text-muted-foreground mb-4">Minimum $20 USD</p>
 
               <input
                 type="number"
@@ -93,7 +93,7 @@ export default function WithdrawalModal({ open, onClose }: { open: boolean; onCl
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 disabled={modalState === 'loading'}
-                className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-lg px-4 py-3 text-[15px] bg-transparent text-black dark:text-white outline-none focus:border-[#00AFF0] transition-colors placeholder:text-[#ccc] dark:placeholder:text-[#555] disabled:opacity-50"
+                  className="w-full border border-border rounded-lg px-4 py-3 text-[15px] bg-background text-foreground outline-none focus:border-primary transition-colors placeholder:text-muted-foreground disabled:opacity-50"
               />
 
               {amount && !isValid && numAmount > 0 && (
@@ -107,26 +107,30 @@ export default function WithdrawalModal({ open, onClose }: { open: boolean; onCl
               <button
                 onClick={handleClose}
                 disabled={modalState === 'loading'}
-                className="flex-1 py-3 text-[13px] font-bold uppercase tracking-wide text-[#999] hover:text-black dark:hover:text-white rounded-full border border-[#e5e5e5] dark:border-[#333] transition-colors disabled:opacity-50"
+                  className="flex-1 py-3 text-[13px] font-bold uppercase tracking-wide text-muted-foreground hover:text-foreground rounded-full border border-border transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={!isValid || modalState === 'loading'}
-                className={`flex-1 py-3 text-[13px] font-bold uppercase tracking-wide rounded-full transition-colors flex items-center justify-center gap-2 ${
+                  className={`flex-1 py-3 text-[11px] md:text-[12px] font-bold uppercase tracking-wide rounded-full transition-colors flex items-center justify-center gap-2 ${
                   isValid && modalState !== 'loading'
-                    ? 'bg-[#00AFF0] hover:bg-[#0099D6] text-white'
-                    : 'bg-[#e5e5e5] dark:bg-[#333] text-[#999] cursor-not-allowed'
+                  ? 'bg-primary hover:bg-primary/90 text-white'
+                  : 'bg-muted text-muted-foreground cursor-not-allowed'
                 }`}
               >
                 {modalState === 'loading' ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    Processing...
+                      <span className="hidden sm:inline">Processing...</span>
+                      <span className="sm:hidden">...</span>
                   </>
                 ) : (
-                  'Request Withdrawal'
+                      <>
+                        <span className="hidden sm:inline">Request Withdrawal</span>
+                        <span className="sm:hidden">Withdraw</span>
+                      </>
                 )}
               </button>
             </div>
