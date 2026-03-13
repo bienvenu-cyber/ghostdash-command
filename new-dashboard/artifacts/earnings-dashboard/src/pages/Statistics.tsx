@@ -76,7 +76,7 @@ export default function Statistics() {
           <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
             <div className="flex items-center gap-3">
               <ArrowLeft className="w-5 h-5 text-black dark:text-white" />
-              <h1 className="text-xl font-bold text-black dark:text-white tracking-tight uppercase">STATISTICS</h1>
+              <h1 className="text-lg md:text-xl font-bold text-black dark:text-white tracking-tight uppercase">STATISTICS</h1>
             </div>
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
           </div>
@@ -117,9 +117,6 @@ export default function Statistics() {
             onTouchEnd={handleChartDoubleTap}
             title="Double-cliquer pour éditer"
           >
-            <div className="absolute top-2 right-2 text-[10px] text-[hsl(var(--muted-foreground))] bg-white/80 dark:bg-black/50 px-2 py-0.5 rounded z-10 pointer-events-none">
-              Double-clic pour éditer
-            </div>
             <AreaChart
               width={chartWidth}
               height={180}

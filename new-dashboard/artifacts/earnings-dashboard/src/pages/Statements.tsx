@@ -105,9 +105,6 @@ export default function Statements() {
             onTouchEnd={handleChartDoubleTap}
             title="Double-cliquer pour éditer"
           >
-            <div className="absolute top-1 right-1 text-[9px] text-[hsl(var(--muted-foreground))] bg-white/80 dark:bg-black/50 px-1.5 py-0.5 rounded z-10 pointer-events-none">
-              Double-clic pour éditer
-            </div>
             <AreaChart width={Math.min(typeof window !== 'undefined' ? window.innerWidth - 60 : 600, 700)} height={130} data={state.allTimeChartData} margin={{ top: 5, right: 5, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="colorGross" x1="0" y1="0" x2="0" y2="1">
