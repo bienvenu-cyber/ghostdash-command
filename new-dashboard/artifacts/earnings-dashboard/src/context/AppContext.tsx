@@ -181,6 +181,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
           parsed.startDate = dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
         }
         const merged = { ...defaultState, ...parsed };
+        // Ensure theme is valid
+        if (merged.theme !== 'light' && merged.theme !== 'dark') {
+          merged.theme = 'light';
+        }
         merged.monthlyData = generateMonthlyData().map((fresh, i) => {
           const saved = parsed.monthlyData?.[i];
           return saved ? { month: fresh.month, amount: saved.amount } : fresh;
@@ -197,6 +201,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isChartEditFormOpen, setChartEditFormOpen] = useState(false);
   const [isBalanceEditFormOpen, setBalanceEditFormOpen] = useState(false);
 
+  // Apply theme class immediately on mount and on every state change
   useEffect(() => {
     localStorage.setItem('earningsDashboardState', JSON.stringify(state));
     if (state.theme === 'dark') {
@@ -205,6 +210,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
       document.documentElement.classList.remove('dark');
     }
   }, [state]);
+
+  // Ensure correct theme class on initial mount
+  useEffect(() => {
+    if (state.theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
   const updateState = (updates: Partial<AppState>) => {
     setState(prev => ({ ...prev, ...updates }));

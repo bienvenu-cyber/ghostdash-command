@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
-import EditableValue from '@/components/EditableValue';
 
 export default function ChartEditForm() {
   const { state, updateState, isChartEditFormOpen, setChartEditFormOpen } = useAppContext();
@@ -10,7 +9,23 @@ export default function ChartEditForm() {
   const [localTheme, setLocalTheme] = useState(state.theme);
   const [localAllTime, setLocalAllTime] = useState(state.allTimeChartData);
 
+  // Sync local state when form opens
+  useEffect(() => {
+    if (isChartEditFormOpen) {
+      setLocalAnnual(state.annualEarnings.toString());
+      setLocalTheme(state.theme);
+      setLocalAllTime(state.allTimeChartData);
+    }
+  }, [isChartEditFormOpen]);
+
   if (!isChartEditFormOpen) return null;
+
+  // Toggle theme immediately
+  const handleThemeToggle = () => {
+    const newTheme = localTheme === 'light' ? 'dark' : 'light';
+    setLocalTheme(newTheme);
+    updateState({ theme: newTheme });
+  };
 
   const handleDistributeEvenly = () => {
     const annual = parseFloat(localAnnual) || 0;
@@ -18,7 +33,7 @@ export default function ChartEditForm() {
     
     const newChartData = state.chartData.map(item => ({
       ...item,
-      earnings: Math.round(monthly / 4) // approximation for weekly points
+      earnings: Math.round(monthly / 4)
     }));
     
     updateState({ chartData: newChartData, annualEarnings: annual });
@@ -26,8 +41,6 @@ export default function ChartEditForm() {
 
   const handleDistributeProportionally = () => {
     const annual = parseFloat(localAnnual) || 0;
-    // Implementation placeholder for proportional distribution
-    // For simplicity, just scaling existing data
     const currentSum = state.chartData.reduce((acc, curr) => acc + curr.earnings, 0);
     const scale = currentSum > 0 ? (annual / 12 / 4) / (currentSum / state.chartData.length) : 1;
     
@@ -63,14 +76,14 @@ export default function ChartEditForm() {
           <div>
             <h3 className="text-sm font-bold text-[#666] dark:text-[#999] uppercase tracking-wider mb-3">Theme</h3>
             <div className="flex items-center gap-3">
-              <span className={`text-sm ${localTheme === 'light' ? 'font-bold text-black dark:text-white' : 'text-[#666] dark:text-[#aaa]'}`}>Light</span>
+              <span className={`text-sm ${localTheme === 'light' ? 'font-bold text-black dark:text-white' : 'text-[#666] dark:text-[#aaa]'}`}>☀️ Light</span>
               <button 
-                onClick={() => setLocalTheme(localTheme === 'light' ? 'dark' : 'light')}
+                onClick={handleThemeToggle}
                 className={`w-12 h-6 rounded-full p-1 transition-colors ${localTheme === 'dark' ? 'bg-[#00AFF0]' : 'bg-gray-300'}`}
               >
                 <div className={`w-4 h-4 bg-white rounded-full transition-transform ${localTheme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
               </button>
-              <span className={`text-sm ${localTheme === 'dark' ? 'font-bold text-black dark:text-white' : 'text-[#666] dark:text-[#aaa]'}`}>Dark</span>
+              <span className={`text-sm ${localTheme === 'dark' ? 'font-bold text-black dark:text-white' : 'text-[#666] dark:text-[#aaa]'}`}>🌙 Dark</span>
             </div>
           </div>
 
@@ -84,7 +97,7 @@ export default function ChartEditForm() {
                   type="number" 
                   value={localAnnual}
                   onChange={(e) => setLocalAnnual(e.target.value)}
-                  className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-3 py-2 text-sm bg-transparent dark:text-white"
+                  className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-3 py-2 text-sm bg-transparent text-black dark:text-white"
                 />
               </div>
               <div className="flex gap-2">
@@ -118,7 +131,7 @@ export default function ChartEditForm() {
                       newAllTime[idx] = { ...point, gross: parseFloat(e.target.value) || 0 };
                       setLocalAllTime(newAllTime);
                     }}
-                    className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-2 py-1 text-sm bg-transparent dark:text-white"
+                    className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-2 py-1 text-sm bg-transparent text-black dark:text-white"
                   />
                   <input 
                     type="number"
@@ -128,7 +141,7 @@ export default function ChartEditForm() {
                       newAllTime[idx] = { ...point, net: parseFloat(e.target.value) || 0 };
                       setLocalAllTime(newAllTime);
                     }}
-                    className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-2 py-1 text-sm bg-transparent dark:text-white"
+                    className="w-full border border-[#e5e5e5] dark:border-[#333] rounded px-2 py-1 text-sm bg-transparent text-black dark:text-white"
                   />
                 </div>
               ))}
