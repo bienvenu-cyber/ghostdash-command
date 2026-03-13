@@ -49,12 +49,19 @@ export default function Statements() {
   };
 
   const menuItems = [
-    { id: 'EARNINGS', label: 'EARNINGS', icon: DollarSign },
-    { id: 'PAYOUT REQUESTS', label: 'PAYOUT REQUESTS', icon: Landmark },
-    { id: 'EARNING STATISTICS', label: 'EARNING STATISTICS', icon: TrendingUp },
-    { id: 'CHARGEBACKS', label: 'CHARGEBACKS', icon: CornerUpLeft },
-    { id: 'REFERRALS', label: 'REFERRALS', icon: Users },
+    { id: 'EARNINGS', label: 'EARNINGS', icon: DollarSign, disabled: true },
+    { id: 'PAYOUT REQUESTS', label: 'PAYOUT REQUESTS', icon: Landmark, disabled: true },
+    { id: 'EARNING STATISTICS', label: 'EARNING STATISTICS', icon: TrendingUp, disabled: false },
+    { id: 'CHARGEBACKS', label: 'CHARGEBACKS', icon: CornerUpLeft, disabled: true },
+    { id: 'REFERRALS', label: 'REFERRALS', icon: Users, disabled: true },
   ];
+
+  const handleMenuClick = (itemId: string) => {
+    const item = menuItems.find(m => m.id === itemId);
+    if (!item?.disabled) {
+      setActiveMenu(itemId);
+    }
+  };
 
   const BalanceCard = () => (
     <div
@@ -217,11 +224,12 @@ export default function Statements() {
             return (
               <button
                 key={item.id}
-                onClick={() => setActiveMenu(item.id)}
-                className={`relative p-2 flex items-center justify-center ${isActive ? 'text-black dark:text-white' : 'text-[#999]'}`}
+                onClick={() => handleMenuClick(item.id)}
+                disabled={item.disabled}
+                className={`relative p-2 flex items-center justify-center transition-opacity ${isActive ? 'text-foreground dark:text-white' : item.disabled ? 'text-[#ccc] dark:text-[#444] cursor-not-allowed opacity-50' : 'text-[#999]'}`}
               >
                 <Icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 1.5} />
-                {isActive && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-black dark:bg-white rounded-full" />}
+                {isActive && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-foreground dark:bg-white rounded-full" />}
               </button>
             );
           })}
@@ -270,12 +278,13 @@ export default function Statements() {
               return (
                 <button
                   key={item.id}
-                  onClick={() => setActiveMenu(item.id)}
-                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-black dark:text-white font-bold' : 'text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white font-medium'}`}
+                  onClick={() => handleMenuClick(item.id)}
+                  disabled={item.disabled}
+                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-foreground dark:text-white font-bold' : item.disabled ? 'text-[#ccc] dark:text-[#444] cursor-not-allowed opacity-50' : 'text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white font-medium'}`}
                 >
                   <Icon className="w-[18px] h-[18px]" strokeWidth={isActive ? 2.5 : 1.5} />
                   <span className="text-[13px] tracking-wide">{item.label}</span>
-                  {isActive && <div className="absolute bottom-1 left-2 right-4 h-[2px] bg-black dark:bg-white rounded-full" />}
+                  {isActive && <div className="absolute bottom-1 left-2 right-4 h-[2px] bg-foreground dark:bg-white rounded-full" />}
                 </button>
               );
             })}
