@@ -262,6 +262,7 @@ export default function Statistics() {
           </div>
         </div>
       </div>
+      <WithdrawalModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} />
     </div>
   );
 }

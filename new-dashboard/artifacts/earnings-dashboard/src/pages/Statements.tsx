@@ -6,6 +6,7 @@ import {
 import { AreaChart, Area, XAxis } from 'recharts';
 import { useAppContext } from '@/context/AppContext';
 import EditableValue from '@/components/EditableValue';
+import WithdrawalModal from '@/components/WithdrawalModal';
 
 export default function Statements() {
   const [activeMenu, setActiveMenu] = useState('EARNING STATISTICS');
