@@ -6,11 +6,5 @@
     "BASE_PATH": "/",
     "NODE_ENV": "production"
   },
-  "regions": ["sfo1"],
-  "functions": {
-    "src/**/*.ts": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  }
+  "regions": ["sfo1"]
 }
