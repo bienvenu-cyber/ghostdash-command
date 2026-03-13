@@ -69,21 +69,22 @@ export function Sidebar() {
             const active = isActive(item.href);
             const Icon = item.icon;
             return (
-              <Link
+              <button
                 key={item.href}
-                href={item.disabled ? "#" : item.href}
-                onClick={(e) => item.disabled && e.preventDefault()}
+                onClick={(e) => {
+                  if (!item.disabled) {
+                    window.location.href = item.href;
+                  }
+                }}
                 className={cn(
                   "py-3 px-4 flex items-center justify-between group cursor-pointer transition-colors rounded-lg",
-                  item.disabled
-                    ? "opacity-50 cursor-not-allowed text-[#ccc] dark:text-[#444]"
-                    : active
+                  active
                     ? state.theme === 'dark'
-                        ? "text-foreground dark:text-white font-bold"
-                        : "text-foreground font-bold"
+                      ? "text-foreground dark:text-white font-bold"
+                      : "text-foreground font-bold"
                     : state.theme === 'dark'
-                        ? "text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
-                        : "text-gray-600 hover:text-foreground hover:bg-gray-50"
+                      ? "text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
+                      : "text-gray-600 hover:text-foreground hover:bg-gray-50"
                 )}
               >
                 <div className="flex items-center gap-4">
@@ -95,7 +96,7 @@ export function Sidebar() {
                     {state.notificationsCount}
                   </span>
                 )}
-              </Link>
+              </button>
             );
           })}
         </nav>
