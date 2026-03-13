@@ -296,6 +296,7 @@ export default function Statements() {
           <EarningStatsContent />
         </div>
       </div>
+      <WithdrawalModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} />
     </div>
   );
 }
