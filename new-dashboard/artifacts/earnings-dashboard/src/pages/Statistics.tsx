@@ -75,8 +75,8 @@ export default function Statistics() {
         <div className="sticky top-0 bg-white dark:bg-[hsl(var(--card))] z-10">
           <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
             <div className="flex items-center gap-3">
-              <ArrowLeft className="w-5 h-5 text-[hsl(var(--foreground))] dark:text-white" />
-              <h1 className="text-lg md:text-xl font-bold text-[hsl(var(--foreground))] dark:text-white tracking-tight uppercase">STATISTICS</h1>
+              <ArrowLeft className="w-5 h-5 text-foreground" />
+              <h1 className="text-lg md:text-xl font-bold text-foreground tracking-tight uppercase">STATISTICS</h1>
             </div>
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
           </div>
@@ -87,11 +87,11 @@ export default function Statistics() {
                 key={tab}
                 onClick={() => setLocation(TAB_ROUTES[tab])}
                 className={`py-3 text-[13px] font-medium transition-colors relative flex-shrink-0 ${
-                  activeTab === tab ? 'text-black dark:text-white font-bold' : 'text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--muted-foreground))] dark:hover:text-[hsl(var(--muted-foreground))]'
+                  activeTab === tab ? 'text-foreground font-bold' : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 {tab}
-                {activeTab === tab && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[hsl(var(--primary))]" />}
+                {activeTab === tab && <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-primary" />}
               </button>
             ))}
           </div>
@@ -100,8 +100,8 @@ export default function Statistics() {
         <div className="p-4 md:p-6 pb-20 md:pb-6">
           <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-md p-4 flex justify-between items-center mb-4">
             <div>
-              <div className="font-bold text-[15px] text-black dark:text-white">Last 30 days</div>
-              <div className="text-[13px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] mt-0.5">Apr 23, 2025 – May 23, 2025 (local time UTC +02:00)</div>
+              <div className="font-bold text-[15px] text-foreground">Last 30 days</div>
+              <div className="text-[13px] text-muted-foreground mt-0.5">Apr 23, 2025 – May 23, 2025 (local time UTC +02:00)</div>
             </div>
             <ChevronDown className="w-5 h-5 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
           </div>
@@ -167,19 +167,19 @@ export default function Statistics() {
                 {state.transactions.map((tx, i) => (
                   <div key={i} className={`flex flex-col py-2.5 px-3 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] ${tx.selected ? 'bg-[rgba(0,175,240,0.06)]' : ''}`}>
                     <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 items-center">
-                      <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] truncate">{tx.date}</div>
-                      <div className="text-[13px] font-bold text-black dark:text-white text-right">
+                      <div className="text-[12px] text-muted-foreground truncate">{tx.date}</div>
+                      <div className="text-[13px] font-bold text-foreground text-right">
                         <EditableValue value={tx.amount} onChange={(v) => handleTransactionEdit(i, 'amount', v)} />
                       </div>
-                      <div className="text-[13px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] text-right">
+                      <div className="text-[13px] text-muted-foreground text-right">
                         <EditableValue value={tx.fee} onChange={(v) => handleTransactionEdit(i, 'fee', v)} />
                       </div>
-                      <div className="text-[13px] font-bold text-black dark:text-white text-right flex items-center justify-end gap-1">
+                      <div className="text-[13px] font-bold text-foreground text-right flex items-center justify-end gap-1">
                         <EditableValue value={tx.net} onChange={(v) => handleTransactionEdit(i, 'net', v)} />
                         {tx.status && <span className="text-[hsl(var(--primary))] text-xs">✓</span>}
                       </div>
                     </div>
-                    <div className="mt-0.5 text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] truncate">
+                    <div className="mt-0.5 text-[12px] text-muted-foreground truncate">
                       {tx.desc} <span className="text-[hsl(var(--primary))]">{tx.name}</span>
                     </div>
                   </div>
