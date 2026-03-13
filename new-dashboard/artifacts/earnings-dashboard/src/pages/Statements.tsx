@@ -10,6 +10,7 @@ import WithdrawalModal from '@/components/WithdrawalModal';
 
 export default function Statements() {
   const [activeMenu, setActiveMenu] = useState('EARNING STATISTICS');
+  const [withdrawalOpen, setWithdrawalOpen] = useState(false);
   const { state, updateState, setChartEditFormOpen, setBalanceEditFormOpen } = useAppContext();
 
   const lastTap = useRef<number>(0);
