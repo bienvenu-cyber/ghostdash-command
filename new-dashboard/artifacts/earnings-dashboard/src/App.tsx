@@ -7,6 +7,7 @@ import BottomNav from "@/components/layout/BottomNav";
 import ChartEditForm from "@/components/ChartEditForm";
 import AllTimeEarningsForm from "@/components/AllTimeEarningsForm";
 import BalanceEditForm from "@/components/BalanceEditForm";
+import LoadingScreen from "@/components/LoadingScreen";
 import Statistics from "@/pages/Statistics";
 import Statements from "@/pages/Statements";
 import { AppProvider, useAppContext } from "@/context/AppContext";
@@ -14,7 +15,11 @@ import { AppProvider, useAppContext } from "@/context/AppContext";
 const queryClient = new QueryClient();
 
 function Router() {
-  const { state } = useAppContext();
+  const { state, isLoading } = useAppContext();
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className={`flex flex-col md:flex-row h-screen w-full overflow-hidden transition-colors ${state.theme === 'dark' ? 'bg-[#fafafa] dark:bg-[#0f0f0f]' : 'bg-[#fafafa]'

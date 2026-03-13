@@ -165,6 +165,8 @@ interface AppContextType {
   setChartEditFormOpen: (open: boolean) => void;
   isBalanceEditFormOpen: boolean;
   setBalanceEditFormOpen: (open: boolean) => void;
+  isLoading: boolean;
+  setIsLoading: (loading: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -200,6 +202,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isAllTimeEarningsFormOpen, setAllTimeEarningsFormOpen] = useState(false);
   const [isChartEditFormOpen, setChartEditFormOpen] = useState(false);
   const [isBalanceEditFormOpen, setBalanceEditFormOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Hide loader after 1.5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Apply theme class immediately on mount and on every state change
   useEffect(() => {
@@ -238,7 +249,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isChartEditFormOpen,
       setChartEditFormOpen,
       isBalanceEditFormOpen,
-      setBalanceEditFormOpen
+      setBalanceEditFormOpen,
+      isLoading,
+      setIsLoading
     }}>
       {children}
     </AppContext.Provider>
