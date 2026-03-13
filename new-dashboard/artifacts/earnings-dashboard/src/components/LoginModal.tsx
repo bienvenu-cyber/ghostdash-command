@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface LoginModalProps {
@@ -15,7 +15,7 @@ export default function LoginModal({ open, onSuccess }: LoginModalProps) {
 
   if (!open) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError('');
     setLoading(true);

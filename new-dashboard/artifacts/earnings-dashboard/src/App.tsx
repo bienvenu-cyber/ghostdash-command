@@ -46,13 +46,13 @@ function Router() {
       <Sidebar />
       <div className="flex-1 h-full overflow-hidden">
         <Switch>
+          {/* Statements - must come BEFORE statistics to avoid conflicts */}
+          <Route path="/my/statements/:sub" component={Statements} />
+          <Route path="/my/statements" component={Statements} />
           {/* Statistics nested routes */}
           <Route path="/my/statistics/:tab/:sub" component={Statistics} />
           <Route path="/my/statistics/:tab" component={Statistics} />
           <Route path="/my/statistics" component={Statistics} />
-          {/* Statements */}
-          <Route path="/my/statements/:sub" component={Statements} />
-          <Route path="/my/statements" component={Statements} />
           {/* Legacy & root redirects */}
           <Route path="/" component={Statistics} />
           <Route>

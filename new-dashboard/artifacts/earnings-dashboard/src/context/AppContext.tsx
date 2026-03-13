@@ -218,9 +218,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
+      console.log('Starting auth check...');
       const { data: { session } } = await supabase.auth.getSession();
+      console.log('Auth check:', { hasSession: !!session, user: session?.user?.id });
 
       if (session?.user) {
+        console.log('User found, checking subscription...');
         // Check if user has active subscription
         const { data: subData } = await supabase
           .from('subscriptions')
@@ -229,12 +232,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .eq('status', 'active')
           .maybeSingle();
 
+        console.log('Subscription check:', { hasSubscription: !!subData, data: subData });
+
         if (subData) {
+          console.log('User authenticated with active subscription');
           setIsAuthenticated(true);
           setLoginDate(session.user.last_sign_in_at || session.user.created_at);
           // Show welcome screen if already authenticated (returning user)
           setShowWelcome(true);
+        } else {
+          console.log('No active subscription found');
         }
+      } else {
+        console.log('No user session found');
       }
       setAuthChecked(true);
     };
