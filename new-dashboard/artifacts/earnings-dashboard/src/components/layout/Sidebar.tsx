@@ -7,7 +7,7 @@ import { useAppContext } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { icon: Home, label: "Home", href: "/my/statistics/overview/earnings" },
+  { icon: Home, label: "Home", href: "/my/statistics/statements/earnings" },
   { icon: Bell, label: "Notifications", href: "/my/notifications" },
   { icon: MessageSquare, label: "Messages", href: "/my/chats" },
   { icon: Grid, label: "Collections", href: "/my/collections/user-lists/subscribers/active" },
