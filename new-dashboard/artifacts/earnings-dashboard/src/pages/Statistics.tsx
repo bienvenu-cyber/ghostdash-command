@@ -233,7 +233,6 @@ export default function Statistics() {
           >
             REQUEST WITHDRAWAL
           </button>
-          </button>
 
           <div className="mt-2">
             <h3 className="text-[12px] uppercase text-[#999999] font-bold mb-4 tracking-wider">EARNINGS</h3>
