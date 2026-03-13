@@ -227,8 +227,12 @@ export default function Statistics() {
             <div className="text-[12px] text-[#999999]">Minimum withdrawal amount is $20</div>
           </div>
 
-          <button className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button
+            onClick={() => setWithdrawalOpen(true)}
+            className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors"
+          >
             REQUEST WITHDRAWAL
+          </button>
           </button>
 
           <div className="mt-2">
