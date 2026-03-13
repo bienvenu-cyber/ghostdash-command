@@ -6,14 +6,16 @@ export default function BalanceEditForm() {
   
   const [currentBal, setCurrentBal] = useState(state.currentBalance.toString());
   const [pendingBal, setPendingBal] = useState(state.pendingBalance.toString());
+  const [localTheme, setLocalTheme] = useState<'light' | 'dark'>(state.theme);
 
   // Update local state if global state changes while modal is open
   useEffect(() => {
     if (isBalanceEditFormOpen) {
       setCurrentBal(state.currentBalance.toString());
       setPendingBal(state.pendingBalance.toString());
+      setLocalTheme(state.theme);
     }
-  }, [isBalanceEditFormOpen, state.currentBalance, state.pendingBalance]);
+  }, [isBalanceEditFormOpen, state.currentBalance, state.pendingBalance, state.theme]);
 
   if (!isBalanceEditFormOpen) return null;
 
@@ -23,6 +25,7 @@ export default function BalanceEditForm() {
       pendingBalance: parseFloat(pendingBal) || state.pendingBalance,
       currentBalanceStats: parseFloat(currentBal) || state.currentBalanceStats,
       pendingBalanceStats: parseFloat(pendingBal) || state.pendingBalanceStats,
+      theme: localTheme,
     });
     setBalanceEditFormOpen(false);
   };
@@ -37,6 +40,21 @@ export default function BalanceEditForm() {
         <h3 className="text-lg font-bold text-black dark:text-white mb-4">Edit Balances</h3>
         
         <div className="flex flex-col gap-4 mb-6">
+          {/* Theme Toggle */}
+          <div className="bg-[#f5f5f5] dark:bg-[#111] rounded-lg p-3">
+            <h4 className="text-xs font-bold text-[#666] dark:text-[#999] uppercase tracking-wider mb-2">Thème</h4>
+            <div className="flex items-center gap-3">
+              <span className={`text-sm ${localTheme === 'light' ? 'font-bold text-black dark:text-white' : 'text-[#999]'}`}>☀️ Light</span>
+              <button
+                onClick={() => setLocalTheme(localTheme === 'light' ? 'dark' : 'light')}
+                className={`w-12 h-6 rounded-full p-1 transition-colors flex-shrink-0 ${localTheme === 'dark' ? 'bg-[#00AFF0]' : 'bg-gray-300'}`}
+              >
+                <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${localTheme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
+              </button>
+              <span className={`text-sm ${localTheme === 'dark' ? 'font-bold text-black dark:text-white' : 'text-[#999]'}`}>🌙 Dark</span>
+            </div>
+          </div>
+
           <div>
             <label className="block text-xs font-bold text-[#666] dark:text-[#999] uppercase mb-1">Current Balance ($)</label>
             <input 

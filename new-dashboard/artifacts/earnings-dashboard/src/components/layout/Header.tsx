@@ -4,7 +4,6 @@ import { useAppContext } from '@/context/AppContext';
 import { cn } from '@/lib/utils';
 import { Edit2, Check, Menu } from 'lucide-react';
 import { useLocation } from 'wouter';
-import { ThemeToggle } from '@/components/ThemeToggle';
 
 export function Header() {
   const { editMode, setEditMode } = useDashboard();
@@ -65,8 +64,6 @@ export function Header() {
               </button>
             ))}
           </div>
-
-          <ThemeToggle />
 
           <button 
             onClick={() => setEditMode(!editMode)}
