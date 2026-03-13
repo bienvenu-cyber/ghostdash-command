@@ -9,3 +9,4 @@ FOR INSERT
 WITH CHECK (
   user_id = auth.uid() OR public.is_admin(auth.uid())
 );
+
