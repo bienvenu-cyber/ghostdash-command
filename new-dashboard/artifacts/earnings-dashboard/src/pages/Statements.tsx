@@ -207,7 +207,7 @@ export default function Statements() {
             <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
           </div>
 
-          <button className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
         </div>
