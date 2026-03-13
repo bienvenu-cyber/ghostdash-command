@@ -65,7 +65,7 @@ export default function ChartEditForm() {
     <div className="fixed inset-0 bg-black/40 z-[100] flex items-center justify-center p-4">
       <div className="bg-card rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="flex justify-between items-center p-4 border-b border-border">
-          <h2 className="text-lg font-bold text-foreground">Edit Chart Data</h2>
+          <h2 className="text-lg font-bold text-foreground">Ghostdash_</h2>
           <button onClick={() => setChartEditFormOpen(false)} className="text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>

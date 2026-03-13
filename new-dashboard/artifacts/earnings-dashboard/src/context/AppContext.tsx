@@ -202,15 +202,22 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isAllTimeEarningsFormOpen, setAllTimeEarningsFormOpen] = useState(false);
   const [isChartEditFormOpen, setChartEditFormOpen] = useState(false);
   const [isBalanceEditFormOpen, setBalanceEditFormOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(() => {
+    // Only show loader if not already shown in this session
+    return !sessionStorage.getItem('loaderShown');
+  });
 
-  // Hide loader after 1.5 seconds
+  // Hide loader after 1.5 seconds and mark as shown
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
+    if (isLoading) {
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+        sessionStorage.setItem('loaderShown', 'true');
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [isLoading]);
 
   // Apply theme class immediately on mount and on every state change
   useEffect(() => {
