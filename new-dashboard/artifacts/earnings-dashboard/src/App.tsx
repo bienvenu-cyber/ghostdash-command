@@ -9,6 +9,7 @@ import AllTimeEarningsForm from "@/components/AllTimeEarningsForm";
 import BalanceEditForm from "@/components/BalanceEditForm";
 import LoadingScreen from "@/components/LoadingScreen";
 import LoginModal from "@/components/LoginModal";
+import WelcomeScreen from "@/components/WelcomeScreen";
 import Statistics from "@/pages/Statistics";
 import Statements from "@/pages/Statements";
 import { AppProvider, useAppContext } from "@/context/AppContext";
@@ -16,14 +17,27 @@ import { AppProvider, useAppContext } from "@/context/AppContext";
 const queryClient = new QueryClient();
 
 function Router() {
-  const { state, isLoading, isAuthenticated, setIsAuthenticated } = useAppContext();
+  const { state, isLoading, isAuthenticated, setIsAuthenticated, loginDate, setLoginDate, showWelcome, setShowWelcome } = useAppContext();
 
   if (isLoading) {
     return <LoadingScreen />;
   }
 
   if (!isAuthenticated) {
-    return <LoginModal open={true} onSuccess={() => setIsAuthenticated(true)} />;
+    return (
+      <LoginModal
+        open={true}
+        onSuccess={() => {
+          setIsAuthenticated(true);
+          setLoginDate(new Date().toISOString());
+          setShowWelcome(false); // Skip welcome for new login
+        }}
+      />
+    );
+  }
+
+  if (showWelcome && loginDate) {
+    return <WelcomeScreen loginDate={loginDate} onContinue={() => setShowWelcome(false)} />;
   }
 
   return (

@@ -170,6 +170,10 @@ interface AppContextType {
   setIsLoading: (loading: boolean) => void;
   isAuthenticated: boolean;
   setIsAuthenticated: (auth: boolean) => void;
+  loginDate: string | null;
+  setLoginDate: (date: string | null) => void;
+  showWelcome: boolean;
+  setShowWelcome: (show: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -211,6 +215,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
+  const [loginDate, setLoginDate] = useState<string | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
 
   // Check authentication on mount
   useEffect(() => {
@@ -226,7 +232,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
           .eq('status', 'active')
           .maybeSingle();
 
-        setIsAuthenticated(!!subData);
+        if (subData) {
+          setIsAuthenticated(true);
+          setLoginDate(session.user.last_sign_in_at || session.user.created_at);
+          // Show welcome screen if already authenticated (returning user)
+          setShowWelcome(true);
+        }
       }
       setAuthChecked(true);
     };
@@ -287,7 +298,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
       isLoading,
       setIsLoading,
       isAuthenticated,
-      setIsAuthenticated
+      setIsAuthenticated,
+      loginDate,
+      setLoginDate,
+      showWelcome,
+      setShowWelcome
     }}>
       {children}
     </AppContext.Provider>
