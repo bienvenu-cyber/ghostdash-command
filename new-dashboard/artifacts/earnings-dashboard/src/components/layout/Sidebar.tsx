@@ -80,11 +80,11 @@ export function Sidebar() {
                   "py-3 px-4 flex items-center justify-between group cursor-pointer transition-colors rounded-lg",
                   active
                     ? state.theme === 'dark'
-                      ? "text-foreground dark:text-white font-bold"
-                      : "text-foreground font-bold"
+                      ? "text-[hsl(var(--foreground))] dark:text-white font-bold"
+                      : "text-[hsl(var(--foreground))] font-bold"
                     : state.theme === 'dark'
-                      ? "text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
-                      : "text-gray-600 hover:text-foreground hover:bg-gray-50"
+                      ? "text-[#666666] dark:text-[#999] hover:text-[hsl(var(--foreground))] dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
+                      : "text-gray-600 hover:text-[hsl(var(--foreground))] hover:bg-gray-50"
                 )}
               >
                 <div className="flex items-center gap-4">
