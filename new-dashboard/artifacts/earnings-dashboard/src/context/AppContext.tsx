@@ -209,10 +209,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [isAllTimeEarningsFormOpen, setAllTimeEarningsFormOpen] = useState(false);
   const [isChartEditFormOpen, setChartEditFormOpen] = useState(false);
   const [isBalanceEditFormOpen, setBalanceEditFormOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(() => {
-    // Only show loader if not already shown in this session
-    return !sessionStorage.getItem('loaderShown');
-  });
+  const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authChecked, setAuthChecked] = useState(false);
   const [loginDate, setLoginDate] = useState<string | null>(null);
@@ -245,17 +242,25 @@ export function AppProvider({ children }: { children: ReactNode }) {
     checkAuth();
   }, []);
 
-  // Hide loader after 1.5 seconds and mark as shown
+  // Hide loader after auth is checked AND minimum time has passed
   useEffect(() => {
-    if (isLoading && authChecked) {
+    if (!authChecked) return undefined;
+
+    const loaderShown = sessionStorage.getItem('loaderShown');
+
+    if (loaderShown) {
+      // Already shown loader in this session, hide immediately
+      setIsLoading(false);
+      return undefined;
+    } else {
+    // First time, show for 1.5 seconds
       const timer = setTimeout(() => {
         setIsLoading(false);
         sessionStorage.setItem('loaderShown', 'true');
       }, 1500);
       return () => clearTimeout(timer);
     }
-    return undefined;
-  }, [isLoading, authChecked]);
+  }, [authChecked]);
 
   // Apply theme class immediately on mount and on every state change
   useEffect(() => {
