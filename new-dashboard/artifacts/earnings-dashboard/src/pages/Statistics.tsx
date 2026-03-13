@@ -200,28 +200,28 @@ export default function Statistics() {
           <div className="flex flex-col gap-1">
             <div className="flex gap-4 items-end cursor-pointer hover:opacity-80" onClick={() => setBalanceEditFormOpen(true)}>
               <div>
-                <div className="text-[28px] font-bold text-black dark:text-white leading-none">
+                <div className="text-[28px] font-bold text-foreground leading-none">
                   ${state.currentBalanceStats.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="text-[13px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] mt-1">Current balance</div>
+                <div className="text-[13px] text-muted-foreground mt-1">Current balance</div>
               </div>
               <div className="pb-[2px]">
-                <div className="text-[16px] font-bold text-black dark:text-white leading-none">
+                <div className="text-[16px] font-bold text-foreground leading-none">
                   ${state.pendingBalanceStats.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
-                <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] mt-1 flex items-center gap-1">
-                  Pending balance <span className="text-[10px] w-3 h-3 rounded-full border border-[hsl(var(--muted-foreground))] flex items-center justify-center text-[hsl(var(--muted-foreground))]">i</span>
+                <div className="text-[12px] text-muted-foreground mt-1 flex items-center gap-1">
+                  Pending balance <span className="text-[10px] w-3 h-3 rounded-full border border-muted-foreground flex items-center justify-center text-muted-foreground">i</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] bg-white dark:bg-[hsl(var(--card))] rounded-md p-3 flex justify-between items-center cursor-pointer">
-              <span className="text-[14px] text-black dark:text-white">Manual payouts</span>
-              <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
+            <div className="border border-border bg-card rounded-md p-3 flex justify-between items-center cursor-pointer">
+              <span className="text-[14px] text-card-foreground">Manual payouts</span>
+              <ChevronDown className="w-4 h-4 text-muted-foreground" />
             </div>
-            <div className="text-[12px] text-[hsl(var(--muted-foreground))]">Minimum withdrawal amount is $20</div>
+            <div className="text-[12px] text-muted-foreground">Minimum withdrawal amount is $20</div>
           </div>
 
           <button
@@ -235,11 +235,11 @@ export default function Statistics() {
             <h3 className="text-[12px] uppercase text-[hsl(var(--muted-foreground))] font-bold mb-4 tracking-wider">EARNINGS</h3>
             <div className="flex flex-col">
               {state.earningsData.map((item, i) => (
-                <div key={i} className="flex justify-between items-center py-3 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] last:border-0">
+                <div key={i} className="flex justify-between items-center py-3 border-b border-border last:border-0">
                   <div className="flex flex-col">
-                    <div className="text-[13px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] mb-0.5">{item.label}</div>
+                    <div className="text-[13px] text-muted-foreground mb-0.5">{item.label}</div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] font-bold text-black dark:text-white">
+                      <span className="text-[14px] font-bold text-card-foreground">
                         <EditableValue value={item.amount} onChange={(v) => handleEarningsEdit(i, 'amount', v)} />
                       </span>
                       <span className="text-[#4CAF50] text-[12px]">
@@ -249,7 +249,7 @@ export default function Statistics() {
                   </div>
                   <div className="w-[80px] h-[30px]">
                     <LineChart width={80} height={30} data={sparklineData}>
-                      <Line type="linear" dataKey="value" stroke={item.color === '#000000' && state.theme === 'dark' ? '#ffffff' : item.color} strokeWidth={2} dot={false} isAnimationActive={false} />
+                      <Line type="linear" dataKey="value" stroke={item.color === '#000000' && state.theme === 'dark' ? 'hsl(var(--foreground))' : item.color} strokeWidth={2} dot={false} isAnimationActive={false} />
                     </LineChart>
                   </div>
                 </div>

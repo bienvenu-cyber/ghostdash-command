@@ -65,24 +65,24 @@ export default function Statements() {
 
   const BalanceCard = () => (
     <div
-      className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-gray-50 dark:hover:bg-[hsl(var(--card))]"
+      className="border border-border rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-muted/50"
       onClick={() => setBalanceEditFormOpen(true)}
     >
       <div className="flex justify-between items-center">
-        <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] font-bold tracking-wider">CURRENT BALANCE</div>
+        <div className="text-[12px] text-muted-foreground font-bold tracking-wider">CURRENT BALANCE</div>
         <div className="flex items-center gap-1">
-          <span className="text-[18px] font-bold text-black dark:text-white">
+          <span className="text-[18px] font-bold text-foreground">
             ${state.currentBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
-          <ChevronUp className="w-4 h-4 text-black dark:text-white" />
+          <ChevronUp className="w-4 h-4 text-foreground" />
         </div>
       </div>
-      <div className="h-[1px] bg-[hsl(var(--border))] dark:bg-[hsl(var(--border))] w-full" />
+      <div className="h-[1px] bg-border w-full" />
       <div className="flex justify-between items-center">
-        <div className="text-[12px] text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] flex items-center gap-1">
-          PENDING BALANCE <span className="text-[10px] w-3 h-3 rounded-full border border-[hsl(var(--muted-foreground))] flex items-center justify-center text-[hsl(var(--muted-foreground))]">i</span>
+        <div className="text-[12px] text-muted-foreground flex items-center gap-1">
+          PENDING BALANCE <span className="text-[10px] w-3 h-3 rounded-full border border-muted-foreground flex items-center justify-center text-muted-foreground">i</span>
         </div>
-        <div className="text-[15px] font-medium text-black dark:text-white">
+        <div className="text-[15px] font-medium text-foreground">
           ${state.pendingBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
         </div>
       </div>
@@ -91,18 +91,18 @@ export default function Statements() {
 
   const EarningStatsContent = () => (
     <>
-      <div className="bg-white dark:bg-[hsl(var(--card))] border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-xl overflow-hidden mb-6 shadow-sm">
-        <div className="p-5 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
+      <div className="bg-card border border-border rounded-xl overflow-hidden mb-6 shadow-sm">
+        <div className="p-5 border-b border-border">
           <div className="flex justify-between items-center mb-4">
-            <div className="text-[14px] font-bold text-black dark:text-white border-b-2 border-black dark:border-white pb-1 inline-block">All time</div>
+            <div className="text-[14px] font-bold text-foreground border-b-2 border-foreground pb-1 inline-block">All time</div>
             <div className="flex items-center gap-1">
-              <span className="text-[20px] font-bold text-black dark:text-white">
+              <span className="text-[20px] font-bold text-foreground">
                 $<EditableValue
                   value={state.allTimeTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   onChange={(v) => updateState({ allTimeTotal: parseFloat(v.replace(/,/g, '')) || state.allTimeTotal })}
                 />
               </span>
-              <ChevronUp className="w-5 h-5 text-black dark:text-white" />
+              <ChevronUp className="w-5 h-5 text-foreground" />
             </div>
           </div>
 
@@ -129,9 +129,9 @@ export default function Statements() {
             </AreaChart>
           </div>
 
-          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-md p-3 flex items-center gap-3 mb-5">
-            <Calendar className="w-5 h-5 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] flex-shrink-0" />
-            <span className="text-[14px] text-black dark:text-white">
+          <div className="border border-border rounded-md p-3 flex items-center gap-3 mb-5">
+            <Calendar className="w-5 h-5 text-muted-foreground flex-shrink-0" />
+            <span className="text-[14px] text-foreground">
               From <EditableValue value={state.startDate} onChange={(v) => updateState({ startDate: v })} /> To{' '}
               {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}
             </span>
@@ -141,26 +141,26 @@ export default function Statements() {
             {state.breakdownData.map((item, i) => (
               <div key={i} className="flex items-center justify-between text-[13px]">
                 <div className="flex items-center gap-2 w-[130px] flex-shrink-0">
-                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color === '#000000' && state.theme === 'dark' ? '#fff' : item.color }} />
-                  <span className="text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]">{item.label}</span>
+                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: item.color === '#000000' && state.theme === 'dark' ? 'hsl(var(--foreground))' : item.color }} />
+                  <span className="text-muted-foreground">{item.label}</span>
                 </div>
-                <div className="text-right flex-1 text-black dark:text-white font-medium">
+                <div className="text-right flex-1 text-foreground font-medium">
                   <EditableValue value={item.gross} onChange={(v) => handleBreakdownEdit(i, 'gross', v)} />
                 </div>
-                <div className="text-right flex-1 text-black dark:text-white font-medium">
+                <div className="text-right flex-1 text-foreground font-medium">
                   <EditableValue value={item.net} onChange={(v) => handleBreakdownEdit(i, 'net', v)} />
                 </div>
               </div>
             ))}
-            <div className="flex items-center justify-between text-[13px] pt-3 mt-1 border-t border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
-              <div className="font-bold text-black dark:text-white w-[130px]">TOTAL</div>
+            <div className="flex items-center justify-between text-[13px] pt-3 mt-1 border-t border-border">
+              <div className="font-bold text-foreground w-[130px]">TOTAL</div>
               <div className="flex-1 text-right">
-                <span className="text-[hsl(var(--muted-foreground))] text-[11px] mr-1">GROSS</span>
-                <span className="font-bold text-black dark:text-white">$119,461.84</span>
+                <span className="text-muted-foreground text-[11px] mr-1">GROSS</span>
+                <span className="font-bold text-foreground">$119,461.84</span>
               </div>
               <div className="flex-1 text-right">
-                <span className="text-[hsl(var(--muted-foreground))] text-[11px] mr-1">NET</span>
-                <span className="font-bold text-black dark:text-white">
+                <span className="text-muted-foreground text-[11px] mr-1">NET</span>
+                <span className="font-bold text-foreground">
                   ${state.allTimeTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
@@ -169,15 +169,15 @@ export default function Statements() {
         </div>
       </div>
 
-      <div className="bg-white dark:bg-[hsl(var(--card))] border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-xl overflow-hidden shadow-sm">
+      <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
         {state.monthlyData.map((item, i) => (
-          <div key={i} className="flex justify-between items-center p-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] last:border-0 cursor-pointer hover:bg-gray-50 dark:hover:bg-[hsl(var(--card))] transition-colors">
-            <div className="text-[14px] font-medium text-black dark:text-white capitalize">{item.month}</div>
+          <div key={i} className="flex justify-between items-center p-4 border-b border-border last:border-0 cursor-pointer hover:bg-muted/50 transition-colors">
+            <div className="text-[14px] font-medium text-foreground capitalize">{item.month}</div>
             <div className="flex items-center gap-3">
-              <span className="text-[14px] font-bold text-black dark:text-white">
+              <span className="text-[14px] font-bold text-foreground">
                 <EditableValue value={item.amount} onChange={(v) => handleMonthlyEdit(i, v)} />
               </span>
-              <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
+              <ChevronDown className="w-4 h-4 text-muted-foreground" />
             </div>
           </div>
         ))}
@@ -206,9 +206,9 @@ export default function Statements() {
 
           <BalanceCard />
 
-          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-3 flex justify-between items-center">
-            <span className="text-[14px] text-black dark:text-white">Manual payouts</span>
-            <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
+          <div className="border border-border rounded-lg p-3 flex justify-between items-center">
+            <span className="text-[14px] text-foreground">Manual payouts</span>
+            <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </div>
 
           <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
