@@ -3,6 +3,7 @@ import { HelpCircle, ChevronDown, ArrowLeft } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, LineChart, Line } from 'recharts';
 import { useAppContext } from '@/context/AppContext';
 import EditableValue from '@/components/EditableValue';
+import WithdrawalModal from '@/components/WithdrawalModal';
 import { useLocation } from 'wouter';
 
 const sparklineData = [
