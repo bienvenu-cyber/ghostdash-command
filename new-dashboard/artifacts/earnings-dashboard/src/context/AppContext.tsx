@@ -103,7 +103,7 @@ interface AppState {
 }
 
 const defaultState: AppState = {
-  theme: 'light',
+  theme: 'light' as const,
   avatar: '',
   currentBalance: 3754.34,
   pendingBalance: 540.75,
