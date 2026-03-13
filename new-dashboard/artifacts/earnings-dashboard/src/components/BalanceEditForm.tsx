@@ -8,7 +8,6 @@ export default function BalanceEditForm() {
   const [pendingBal, setPendingBal] = useState(state.pendingBalance.toString());
   const [localTheme, setLocalTheme] = useState<'light' | 'dark'>(state.theme);
 
-  // Update local state if global state changes while modal is open
   useEffect(() => {
     if (isBalanceEditFormOpen) {
       setCurrentBal(state.currentBalance.toString());
@@ -18,6 +17,13 @@ export default function BalanceEditForm() {
   }, [isBalanceEditFormOpen, state.currentBalance, state.pendingBalance, state.theme]);
 
   if (!isBalanceEditFormOpen) return null;
+
+  // Toggle theme immediately
+  const handleThemeToggle = () => {
+    const newTheme = localTheme === 'light' ? 'dark' : 'light';
+    setLocalTheme(newTheme);
+    updateState({ theme: newTheme });
+  };
 
   const handleSave = () => {
     updateState({
@@ -46,7 +52,7 @@ export default function BalanceEditForm() {
             <div className="flex items-center gap-3">
               <span className={`text-sm ${localTheme === 'light' ? 'font-bold text-black dark:text-white' : 'text-[#999]'}`}>☀️ Light</span>
               <button
-                onClick={() => setLocalTheme(localTheme === 'light' ? 'dark' : 'light')}
+                onClick={handleThemeToggle}
                 className={`w-12 h-6 rounded-full p-1 transition-colors flex-shrink-0 ${localTheme === 'dark' ? 'bg-[#00AFF0]' : 'bg-gray-300'}`}
               >
                 <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${localTheme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
@@ -62,7 +68,7 @@ export default function BalanceEditForm() {
               step="0.01"
               value={currentBal}
               onChange={(e) => setCurrentBal(e.target.value)}
-              className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent dark:text-white outline-none focus:border-[#00AFF0]"
+              className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent text-black dark:text-white outline-none focus:border-[#00AFF0]"
               autoFocus
             />
           </div>
@@ -73,7 +79,7 @@ export default function BalanceEditForm() {
               step="0.01"
               value={pendingBal}
               onChange={(e) => setPendingBal(e.target.value)}
-              className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent dark:text-white outline-none focus:border-[#00AFF0]"
+              className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent text-black dark:text-white outline-none focus:border-[#00AFF0]"
             />
           </div>
         </div>

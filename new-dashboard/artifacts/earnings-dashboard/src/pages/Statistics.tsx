@@ -3,6 +3,7 @@ import { HelpCircle, ChevronDown, ArrowLeft } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, Tooltip, LineChart, Line } from 'recharts';
 import { useAppContext } from '@/context/AppContext';
 import EditableValue from '@/components/EditableValue';
+import WithdrawalModal from '@/components/WithdrawalModal';
 import { useLocation } from 'wouter';
 
 const sparklineData = [
@@ -29,6 +30,7 @@ export default function Statistics() {
   const [location, setLocation] = useLocation();
   const activeTab = getTabFromPath(location);
   const { state, updateState, setChartEditFormOpen, setBalanceEditFormOpen } = useAppContext();
+  const [withdrawalOpen, setWithdrawalOpen] = useState(false);
 
   const lastTap = useRef<number>(0);
   const lastClick = useRef<number>(0);
@@ -225,8 +227,12 @@ export default function Statistics() {
             <div className="text-[12px] text-[#999999]">Minimum withdrawal amount is $20</div>
           </div>
 
-          <button className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button
+            onClick={() => setWithdrawalOpen(true)}
+            className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors"
+          >
             REQUEST WITHDRAWAL
+          </button>
           </button>
 
           <div className="mt-2">
@@ -256,6 +262,7 @@ export default function Statistics() {
           </div>
         </div>
       </div>
+      <WithdrawalModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} />
     </div>
   );
 }

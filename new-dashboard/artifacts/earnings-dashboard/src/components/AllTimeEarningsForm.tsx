@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useAppContext } from '@/context/AppContext';
 
@@ -17,10 +17,34 @@ export default function AllTimeEarningsForm() {
   });
   const [localTheme, setLocalTheme] = useState<'light' | 'dark'>(state.theme);
 
+  // Sync when form opens
+  useEffect(() => {
+    if (isAllTimeEarningsFormOpen) {
+      setLocalState({
+        accountAge: state.accountAge,
+        startDate: state.startDate,
+        notificationsCount: state.notificationsCount.toString(),
+        messagesCount: state.messagesCount.toString(),
+        maxValue: state.maxValue.toString(),
+        topRated: state.topRated,
+        currentBalance: state.currentBalance.toString(),
+        pendingBalance: state.pendingBalance.toString(),
+      });
+      setLocalTheme(state.theme);
+    }
+  }, [isAllTimeEarningsFormOpen]);
+
   if (!isAllTimeEarningsFormOpen) return null;
 
   const handleChange = (field: string, value: string) => {
     setLocalState(prev => ({ ...prev, [field]: value }));
+  };
+
+  // Toggle theme immediately
+  const handleThemeToggle = () => {
+    const newTheme = localTheme === 'light' ? 'dark' : 'light';
+    setLocalTheme(newTheme);
+    updateState({ theme: newTheme });
   };
 
   const handleCalculate = () => {
@@ -77,7 +101,7 @@ export default function AllTimeEarningsForm() {
             <div className="flex items-center gap-3">
               <span className={`text-sm ${localTheme === 'light' ? 'font-bold text-black dark:text-white' : 'text-[#999]'}`}>☀️ Light</span>
               <button
-                onClick={() => setLocalTheme(localTheme === 'light' ? 'dark' : 'light')}
+                onClick={handleThemeToggle}
                 className={`w-12 h-6 rounded-full p-1 transition-colors flex-shrink-0 ${localTheme === 'dark' ? 'bg-[#00AFF0]' : 'bg-gray-300'}`}
               >
                 <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${localTheme === 'dark' ? 'translate-x-6' : 'translate-x-0'}`} />
@@ -96,7 +120,7 @@ export default function AllTimeEarningsForm() {
                   step={type === 'number' ? '0.01' : undefined}
                   value={localState[key]}
                   onChange={(e) => handleChange(key, e.target.value)}
-                  className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent dark:text-white outline-none focus:border-[#00AFF0] transition-colors"
+                  className="w-full border border-[#e5e5e5] dark:border-[#333] rounded-md px-3 py-2 text-sm bg-transparent text-black dark:text-white outline-none focus:border-[#00AFF0] transition-colors"
                 />
               </div>
             ))}

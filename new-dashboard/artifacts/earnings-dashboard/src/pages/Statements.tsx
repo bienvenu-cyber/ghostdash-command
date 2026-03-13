@@ -6,9 +6,11 @@ import {
 import { AreaChart, Area, XAxis } from 'recharts';
 import { useAppContext } from '@/context/AppContext';
 import EditableValue from '@/components/EditableValue';
+import WithdrawalModal from '@/components/WithdrawalModal';
 
 export default function Statements() {
   const [activeMenu, setActiveMenu] = useState('EARNING STATISTICS');
+  const [withdrawalOpen, setWithdrawalOpen] = useState(false);
   const { state, updateState, setChartEditFormOpen, setBalanceEditFormOpen } = useAppContext();
 
   const lastTap = useRef<number>(0);
@@ -205,7 +207,7 @@ export default function Statements() {
             <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
           </div>
 
-          <button className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
         </div>
@@ -260,7 +262,7 @@ export default function Statements() {
             <ChevronDown className="w-4 h-4 text-[#666666] dark:text-[#999]" />
           </div>
 
-          <button className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[#00AFF0] hover:bg-[#0099D6] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
 
@@ -294,6 +296,7 @@ export default function Statements() {
           <EarningStatsContent />
         </div>
       </div>
+      <WithdrawalModal open={withdrawalOpen} onClose={() => setWithdrawalOpen(false)} />
     </div>
   );
 }
