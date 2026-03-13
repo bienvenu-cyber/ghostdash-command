@@ -50,12 +50,13 @@ function generateMonthlyData(): MonthlyData[] {
     'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
     'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'
   ];
-  const baseAmounts = [4295.09, 3707.68, 3421.55, 4102.30, 3890.17, 4567.22,
-    3234.88, 4789.45, 3654.12, 4123.67, 3987.54, 3541.29];
-  for (let i = 0; i < 12; i++) {
+  // Generate 30 months of data with varied amounts
+  for (let i = 0; i < 30; i++) {
     const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const name = `${monthNames[d.getMonth()]}, ${d.getFullYear()}`;
-    const amount = `$${baseAmounts[i].toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    // Generate realistic varying amounts between $2,500 and $5,500
+    const baseAmount = 3500 + Math.sin(i * 0.5) * 1200 + Math.cos(i * 0.3) * 800;
+    const amount = `${baseAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     months.push({ month: name, amount });
   }
   return months;
