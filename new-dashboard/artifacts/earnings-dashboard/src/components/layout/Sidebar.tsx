@@ -7,16 +7,16 @@ import { useAppContext } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { icon: Home, label: "Home", href: "/my/statistics/statements/earnings" },
-  { icon: Bell, label: "Notifications", href: "/my/notifications" },
-  { icon: MessageSquare, label: "Messages", href: "/my/chats" },
-  { icon: Grid, label: "Collections", href: "/my/collections/user-lists/subscribers/active" },
-  { icon: Lock, label: "Vault", href: "/my/vault/list/all" },
-  { icon: Clock, label: "Queue", href: "/my/queue" },
-  { icon: FileText, label: "Statements", href: "/my/statements/earnings" },
-  { icon: BarChart2, label: "Statistics", href: "/my/statistics/statements/earnings" },
-  { icon: User, label: "My profile", href: "/my/profile" },
-  { icon: MoreHorizontal, label: "More", href: "/my/more" },
+  { icon: Home, label: "Home", href: "/my/statistics/statements/earnings", disabled: false },
+  { icon: Bell, label: "Notifications", href: "/my/notifications", disabled: true },
+  { icon: MessageSquare, label: "Messages", href: "/my/chats", disabled: true },
+  { icon: Grid, label: "Collections", href: "/my/collections/user-lists/subscribers/active", disabled: true },
+  { icon: Lock, label: "Vault", href: "/my/vault/list/all", disabled: true },
+  { icon: Clock, label: "Queue", href: "/my/queue", disabled: true },
+  { icon: FileText, label: "Statements", href: "/my/statements/earnings", disabled: false },
+  { icon: BarChart2, label: "Statistics", href: "/my/statistics/statements/earnings", disabled: false },
+  { icon: User, label: "My profile", href: "/my/profile", disabled: true },
+  { icon: MoreHorizontal, label: "More", href: "/my/more", disabled: true },
 ];
 
 export function Sidebar() {
@@ -71,16 +71,19 @@ export function Sidebar() {
             return (
               <Link
                 key={item.href}
-                href={item.href}
+                href={item.disabled ? "#" : item.href}
+                onClick={(e) => item.disabled && e.preventDefault()}
                 className={cn(
                   "py-3 px-4 flex items-center justify-between group cursor-pointer transition-colors rounded-lg",
-                  active
+                  item.disabled
+                    ? "opacity-50 cursor-not-allowed text-[#ccc] dark:text-[#444]"
+                    : active
                     ? state.theme === 'dark'
-                      ? "text-black dark:text-white font-bold"
-                      : "text-black font-bold"
+                        ? "text-foreground dark:text-white font-bold"
+                        : "text-foreground font-bold"
                     : state.theme === 'dark'
-                      ? "text-[#666666] dark:text-[#999] hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
-                      : "text-gray-600 hover:text-black hover:bg-gray-50"
+                        ? "text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1a1a1a]"
+                        : "text-gray-600 hover:text-foreground hover:bg-gray-50"
                 )}
               >
                 <div className="flex items-center gap-4">
