@@ -49,18 +49,15 @@ export default function Statements() {
   };
 
   const menuItems = [
-    { id: 'EARNINGS', label: 'EARNINGS', icon: DollarSign, disabled: true },
-    { id: 'PAYOUT REQUESTS', label: 'PAYOUT REQUESTS', icon: Landmark, disabled: true },
-    { id: 'EARNING STATISTICS', label: 'EARNING STATISTICS', icon: TrendingUp, disabled: false },
-    { id: 'CHARGEBACKS', label: 'CHARGEBACKS', icon: CornerUpLeft, disabled: true },
-    { id: 'REFERRALS', label: 'REFERRALS', icon: Users, disabled: true },
+    { id: 'EARNINGS', label: 'EARNINGS', icon: DollarSign },
+    { id: 'PAYOUT REQUESTS', label: 'PAYOUT REQUESTS', icon: Landmark },
+    { id: 'EARNING STATISTICS', label: 'EARNING STATISTICS', icon: TrendingUp },
+    { id: 'CHARGEBACKS', label: 'CHARGEBACKS', icon: CornerUpLeft },
+    { id: 'REFERRALS', label: 'REFERRALS', icon: Users },
   ];
 
   const handleMenuClick = (itemId: string) => {
-    const item = menuItems.find(m => m.id === itemId);
-    if (!item?.disabled) {
-      setActiveMenu(itemId);
-    }
+    setActiveMenu(itemId);
   };
 
   const BalanceCard = () => (
@@ -225,8 +222,7 @@ export default function Statements() {
               <button
                 key={item.id}
                 onClick={() => handleMenuClick(item.id)}
-                disabled={item.disabled}
-                className={`relative p-2 flex items-center justify-center transition-opacity ${isActive ? 'text-foreground' : item.disabled ? 'text-muted-foreground/40 cursor-not-allowed opacity-50' : 'text-muted-foreground'}`}
+                className={`relative p-2 flex items-center justify-center transition-colors ${isActive ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 <Icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 1.5} />
                 {isActive && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-foreground rounded-full" />}
@@ -279,8 +275,7 @@ export default function Statements() {
                 <button
                   key={item.id}
                   onClick={() => handleMenuClick(item.id)}
-                  disabled={item.disabled}
-                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-foreground font-bold' : item.disabled ? 'text-muted-foreground/40 cursor-not-allowed opacity-50' : 'text-muted-foreground hover:text-foreground font-medium'}`}
+                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-foreground font-bold' : 'text-muted-foreground hover:text-foreground font-medium'}`}
                 >
                   <Icon className="w-[18px] h-[18px]" strokeWidth={isActive ? 2.5 : 1.5} />
                   <span className="text-[13px] tracking-wide">{item.label}</span>
