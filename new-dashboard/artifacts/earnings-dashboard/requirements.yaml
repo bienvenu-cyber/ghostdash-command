@@ -1,0 +1,16 @@
+packages:
+  "recharts": "For rendering earnings line charts and pie charts"
+  "date-fns": "For formatting dates in charts and tables"
+  "clsx": "For constructing Tailwind class names"
+  "tailwind-merge": "For merging Tailwind classes efficiently"
+  "lucide-react": "For icons throughout the dashboard"
+  "uuid": "For generating unique IDs for new statement entries"
+
+images:
+  - path: "artifacts/earnings-dashboard/public/images/avatar.png"
+    description: "A professional, stylized placeholder avatar for a creator profile, aesthetic neon lighting, dark background"
+    aspect_ratio: "1:1"
+
+notes:
+  - This is a frontend-only application using localStorage for data persistence.
+  - The app enforces a dark theme by default matching the requested aesthetic.

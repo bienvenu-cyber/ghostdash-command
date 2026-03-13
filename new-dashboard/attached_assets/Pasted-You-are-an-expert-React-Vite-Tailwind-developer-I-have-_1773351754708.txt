@@ -1,0 +1,49 @@
+You are an expert React + Vite + Tailwind developer. I have my own custom dashboard that looks like the OnlyFans creator earnings/statements pages:
+
+- https://onlyfans.com/my/statistics/statements/earnings/
+- https://onlyfans.com/my/statistics/statements/earnings/  (same page basically, two URLs you gave)
+
+My real dashboard is already built with: React (latest), Vite, Tailwind CSS (exact same classes/colors/fonts/spacing as OnlyFans style where possible), probably React Router or simple navigation, charts (Recharts or Chart.js), tables, date pickers, etc.
+
+Task — clone it 100% exactly (pixel-perfect if possible):
+1. First, assume / research a typical OnlyFans earnings dashboard layout (public screenshots show: 
+   - Top summary cards (total earnings, this month, pending, etc.)
+   - Date range picker + filters
+   - Line chart for earnings over time
+   - Detailed statements table (date, description, amount, type: subscription/tip/PPV/refund, etc.)
+   - Sidebar navigation (if present in my version)
+   - Dark/light mode? probably dark like OnlyFans)
+
+2. But MOST IMPORTANT: clone EXACTLY what MY dashboard looks like (the one I created at those URLs — even if it's behind login, imagine it's my custom version). Do NOT make a generic OnlyFans clone — make it match my existing site as closely as possible in structure, components and style.
+
+3. Use this exact stack:
+   - Vite + React (TypeScript or JS — prefer TS if modern)
+   - Tailwind CSS (with the same utility classes palette: bg-gray-900, text-pink-500, etc. to mimic OnlyFans pink/black theme)
+   - React Router for the two pages if they differ slightly
+   - Chart library: Recharts or Chart.js (choose the one that matches my charts best)
+   - Editable mode: Add a global toggle "Edit Mode" (button in header) that makes:
+     - All texts/numbers clickable → input fields
+     - Table rows editable (inline or modal)
+     - Chart data editable (simple form to change data points)
+     - Save to localStorage or fake backend for persistence
+
+4. Make the whole dashboard fully editable/dynamic:
+   - Fake/mock data at first (but structured like real earnings: periods, transactions, totals)
+   - Allow editing every visible value, adding/deleting rows, changing chart data
+
+5. Include:
+   - Responsive design (mobile sidebar collapse, etc.)
+   - Hover effects, tooltips, subtle animations like the original
+   - Clean, modern UI — no extra features unless they exist in my version
+
+Steps for you:
+- Create a new Vite + React + Tailwind project
+- Build the layout with sidebar (if any), header, main content
+- Implement the two pages / views
+- Add edit functionality everywhere possible
+- After code generation, run it and give the live preview link
+- Say: "Dashboard cloné exactement — mode édition activé — prêt à modifier"
+
+Do NOT add features that don't exist in my original. Clone as faithfully as possible. If unsure about exact details, use typical OnlyFans earnings UI as base but prioritize editability.
+
+Start now — generate the full project structure and main code files.

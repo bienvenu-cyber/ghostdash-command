@@ -1,0 +1,145 @@
+Tu avais déjà réalisé une copie pixel parfaite des pages Statements et Statistics en version desktop. On passe maintenant à la suite exacte du projet.
+
+1. Audit et gestion complète de la version mobile (Statements + Statistics)
+
+
+
+
+
+Audite et implémente entièrement les deux pages en version mobile (responsive).
+
+
+
+Sur mobile, il n’y a plus de side nav mais un bottom nav.
+
+
+
+Le contenu des pages doit être strictement identique à la version desktop (mêmes données, mêmes sections, mêmes textes, mêmes charts).
+→ La capture que je t’envoie pour mobile n’est pas la page complète : j’ai juste pris le haut pour que tu voies le layout général et le bottom nav. Le reste du contenu doit rester identique à la version desktop que tu as déjà faite.
+
+Comportement du bouton Home sur mobile :
+
+
+
+// Mobile: Home toggles between statistics and statements if (isMobilePage) {   if (isOnStatisticsMobile) {     routes.Home = '/my/statistics/overview/earnings'; // Si on est sur Statistics → Home va vers Statements   } else {     routes.Home = '/my/statements/earnings';         // Si on est sur Statements → Home va vers Statistics   } }
+
+2. Rendre TOUTES les données éditables (desktop + mobile)
+
+Après avoir terminé la version mobile, rends toutes les données des deux pages éditables :
+
+
+
+
+
+Montants, mois, années, chiffres, pourcentages, etc.
+
+
+
+L’utilisateur peut cliquer/tapper n’importe où sur un nombre pour l’éditer (champ input inline ou modal selon le cas).
+
+
+
+Ceci doit fonctionner parfaitement sur desktop (clic) et mobile (tap).
+
+
+
+3. Rendre les charts (graphiques) directement éditables à la main
+
+
+
+Objectif :
+
+
+
+
+
+L’utilisateur doit pouvoir éditer les graphs directement avec des gestes simples :
+
+
+
+
+
+Desktop : clic + drag
+
+
+
+Mobile : tap + swipe
+
+
+
+Il suffit de cliquer/tapper sur un élément du chart (barre, ligne, point, segment, etc.) pour entrer en mode édition.
+
+Quand l’utilisateur entre en mode édition d’un chart :
+
+
+
+
+
+Un formulaire dédié à l’édition du chart apparaît uniquement en mode édition (il disparaît dès qu’on quitte le mode).
+
+
+
+Ce formulaire permet de :
+
+
+
+
+
+Saisir un chiffre annuel global
+
+
+
+Distribuer automatiquement ce chiffre sur les 12 mois (répartition proportionnelle ou uniforme – à toi de choisir la plus logique)
+
+
+
+Le chart se met à jour en temps réel
+
+
+
+Le mois courant est automatiquement mis en évidence sur le dashboard (ex : on est en avril → la valeur d’avril est mise à jour et surlignée correctement sur le dashboard)
+
+Dans ce même formulaire d’édition du chart :
+
+
+
+
+
+Ajoute un toggle Light / Dark theme (switch) pour gérer le thème directement depuis le formulaire.
+
+Il faut un second qui gere All time earnings:
+
+Account age:   Start Date: Notifications:
+
+Messages: Max value: Top rated:             
+
+Current balance: Pending balance:CALCULATE
+
+Clear Close Logout
+
+ici , le but c'est de permettre a l'utilisateur de modifier les montants ou chiffres ou autres etc de ce qu'il veux directement ici et sa se save directement) et ce formulaire apparais uniquement quand on appui sur le bouton de new post ou + sur mobile . Assure toi de bien gerer.
+
+Il faut egalement un 3e formulaire pour gerer $3,754.34
+
+Current balance $540.73 Pending balance ( Un petit formulaire qui permet de falicelement editer les montant de ces deux points. )
+
+
+
+Avatar :
+
+
+
+
+
+Implémente l’upload d’image directement au niveau de l’avatar (clic/tap sur l’avatar → sélection de fichier → preview instantanée).
+
+Sauvegarde :
+
+
+
+
+
+Après chaque modification (chiffres, charts, upload avatar, thème), tout est sauvegardé en local (localStorage ou IndexedDB, comme tu préfères).
+
+Tu peux maintenant continuer exactement là où tu étais : mobile d’abord (Statements + Statistics), puis l’édition des données + édition directe des charts + formulaire + toggle thème + upload avatar + sauvegarde locale.
+

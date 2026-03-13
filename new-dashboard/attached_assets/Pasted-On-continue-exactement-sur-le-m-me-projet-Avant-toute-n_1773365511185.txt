@@ -1,0 +1,82 @@
+On continue exactement sur le même projet. Avant toute nouvelle feature, il faut corriger un bug critique qui persiste malgré ce que tu avais indiqué.
+1. Correction urgente – Thème (priorité #1 – ne passe pas à la suite avant que ce soit fixé)
+Tu avais écrit :
+« Thème : blanc par défaut, toggle Light/Dark actif partout (formulaire chart + formulaire + bouton) »
+Mais dans les faits :
+
+Le thème reste sombre (dark) par défaut sur toutes les pages.
+Le toggle Light/Dark ne change absolument rien quand on clique dessus (ni visuellement, ni dans le CSS).
+
+Actions obligatoires :
+
+Mets le thème LIGHT par défaut sur toute l’application (desktop + mobile).
+Fais en sorte que le toggle fonctionne vraiment :
+Quand on passe sur DARK → l’application devient sombre (fond foncé, textes clairs, etc.)
+Quand on repasse sur LIGHT → l’application redevient claire
+
+Le toggle doit exister et fonctionner aux endroits suivants :
+Dans le formulaire d’édition des charts (double-tap / double-clic)
+Dans le formulaire qui apparaît quand on clique sur le bouton « + » (si tu en as déjà un)
+Idéalement : un toggle global visible quelque part (header, settings, etc.) pour tester facilement
+
+Utilise une méthode fiable (ex : classe dark sur <html> ou <body>, CSS variables, ou Tailwind dark: si tu utilises Tailwind).
+Sauvegarde le choix du thème en localStorage pour qu’il persiste au rechargement.
+
+Test à faire avant de continuer :
+Change le toggle 3–4 fois → le visuel doit changer immédiatement à chaque fois. Si ça ne marche toujours pas, dis-le-moi explicitement avec ce qui bloque.
+2. Nouvelle fonctionnalité : Formulaire « Request Withdrawal »
+Une fois le thème corrigé et validé :
+Quand l’utilisateur clique sur le bouton « Request Withdrawal » (qui existe déjà sur la page Statements / Earnings) :
+
+Un petit modal / formulaire overlay apparaît au centre de l’écran (desktop et mobile).
+Contenu du formulaire :
+
+textMANUAL PAYOUTS
+
+MAX: $XXX.XX     ← montant exact qui est affiché dans "Current balance" (mise à jour dynamique)
+
+Minimum $20 USD
+
+[ Champ input numérique ]    ← pour saisir le montant souhaité
+                             ← placeholder : "Enter amount"
+
+CANCEL                       REQUEST WITHDRAWAL
+(grisé / désactivé par défaut)     (grisé / désactivé par défaut)
+Règles de validation en temps réel :
+
+Tant que le montant saisi est :
+vide OU
+< 20 OU
+Current balance
+→ le bouton REQUEST WITHDRAWAL reste grisé / désactivé
+
+Dès que le montant est valide (≥ 20 ET ≤ Current balance) :
+→ le bouton devient bleu actif (et cliquable)
+
+Quand on clique sur REQUEST WITHDRAWAL (si valide) :
+
+Le bouton affiche un petit loading spinner (pendant 1,5–2 secondes pour simuler)
+Ensuite, remplace le contenu du modal par :
+
+textPayout request is being processed
+
+[X]    ← bouton croix pour fermer le modal
+
+Le modal reste ouvert jusqu’à ce que l’utilisateur clique sur la croix [X].
+Après fermeture → retour normal à la page (pas de rechargement complet).
+(Optionnel mais apprécié : mets à jour visuellement le Current balance à 0 ou soustrais le montant demandé – mais garde ça simple pour l’instant.)
+
+Comportement mobile :
+
+Le modal doit être bien centré, responsive, et ne pas être coupé par le bottom nav.
+Fermeture possible aussi en tapant en dehors du modal (classique).
+
+Sauvegarde :
+Pas besoin de persister le retrait (c’est une simu). Juste l’expérience utilisateur pour l’instant.
+Ordre strict :
+
+Corrige le thème LIGHT par défaut + toggle fonctionnel → dis-moi quand c’est OK
+Ensuite seulement → implémente le formulaire Request Withdrawal
+
+Merci !
+Commence par le thème, c’est bloquant. Une fois que le toggle marche vraiment partout, on passe au retrait.

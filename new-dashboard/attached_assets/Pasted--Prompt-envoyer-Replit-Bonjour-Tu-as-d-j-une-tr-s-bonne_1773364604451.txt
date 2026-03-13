@@ -1,0 +1,165 @@
+
+
+---
+
+**Prompt à envoyer à Replit :**
+
+Bonjour,
+
+Tu as déjà une très bonne base (desktop pixel-perfect + version mobile partielle). On continue exactement sur le même projet.  
+
+**IMPORTANT :**  
+
+- Ne casse rien de ce qui fonctionne déjà (routing actuel, sauvegarde locale, édition des nombres hors charts, etc.).  
+
+- Applique les corrections et améliorations dans l’ordre ci-dessous.  
+
+- Travaille sur les deux pages : **Statements** et **Statistics**, desktop + mobile.
+
+### 1. Corrections urgentes (à faire en premier)
+
+**Thème global**  
+
+- Le thème par défaut doit être **light** (et non dark).  
+
+- Le toggle Light/Dark doit fonctionner parfaitement partout : il change réellement le thème en temps réel (CSS variables ou Tailwind  mode etc).  
+
+- Le toggle doit aussi être présent dans le formulaire qui apparaît quand on appuie sur le bouton **+**.
+
+**Mobile – Statements page**  
+
+- Le header n’est plus fixe.  
+
+- Toute la page doit être **scrolable du haut jusqu’en bas** (exactement comme sur la page Statistics mobile).  
+
+- Le bottom nav ne change pas .
+
+**Historique en bas de Statements (mobile + desktop)**  
+
+- Remplace les 2 mois actuels par les **12 derniers mois**.  
+
+- Ordre : mois le plus récent en premier (ex : Mars 2026 en haut).  
+
+- Le système doit être intelligent : le mois actuel doit toujours être en première position et se mettre à jour automatiquement chaque mois (utilise la date système + localStorage pour persister).
+
+**Layout de Statistics (mobile + desktop)**  
+
+masque ou supprime sur monile uniquement  
+
+  1.  les blocs ⭐TOP 1.8%$3,179.51
+
+Current balance $457.96Pending balance iManual payouts
+
+Minimum withdrawal amount is $20
+
+REQUEST WITHDRAWALwARNINGS
+
+Total$7,543.44↑138.6%Subscriptions
+
+$3,616.27↑192.9%Tips $1,414.16↑183.5%Messages$4,240.45↑111%
+
+je precise sur mobile uniquement .
+
+
+
+  2. Enfin l’historique « Tips, payments for messages, etc. » en bas.  
+
+- Dans l’historique, ajoute **plus de lignes** (minimum 12 lignes au lieu des 6 actuelles).
+
+### 2. Modification visuelle des charts (granularité)
+
+**Statistics page** (selon la capture que je joins) :  
+
+- Changer le label « Cumulé » → **« Journalier »**  
+
+- Désactiver complètement le **Lissage** (Smoothing)  
+
+- Afficher la **Granularité brute** (raw data)
+
+**Statements page** (pas de capture cette fois garde les couleurs actuel et update ) :  
+
+- Afficher également la **Granularité brute**  
+
+- Désactiver le Lissage et le mode Cumulé
+
+### 3. Édition des charts (comportement amélioré)
+
+**Mode édition des graphs** :  
+
+- Le formulaire d’édition du chart n’apparaît **plus au simple clic/tap**, mais **uniquement au double-clic (desktop) ou double-tap (mobile)** sur n’importe quel élément du graphique.  
+
+- Une fois en mode édition, l’utilisateur peut quand même modifier directement le graph avec des gestes simples :  
+
+  - Desktop : clic + drag sur les barres/points/lignes  
+
+  - Mobile : tap + swipe sur les éléments  
+
+**Formulaire d’édition du chart** (qui apparaît au double-clic/tap) :  
+
+- Garde exactement les fonctionnalités précédentes :  
+
+  - Saisir un chiffre annuel  
+
+  - Distribution automatique sur les 12 mois  
+
+  - Mise à jour en temps réel du chart  
+
+  - Le mois courant est automatiquement mis en évidence sur le dashboard  
+
+- S'assurer que le  **toggle Light/Dark** dans ce formulaire aussi (fonctionne egalement ).
+
+### 4. Mise à jour complète du routing de l’application
+
+Une fois tout le reste corrigé et optimisé, refais **tout le routing** de l’application pour qu’il corresponde exactement à cette structure (nested routing pour Statistics) :
+
+- Notifications → `/my/notifications`  
+
+- Chats → `/my/chats`  
+
+- Subscribers → `/my/collections/user-lists/subscribers/active`  
+
+- Vault → `/my/vault/list/all`  
+
+- Queue → `/my/queue`  
+
+- Earnings (Statements) → `/my/statements/earnings`  
+
+**Statistics (Nested Routing + Tabs)** :  
+
+- Main → `/my/statistics/statements/earnings`  
+
+- Overview → `/my/statistics/overview/earnings`  
+
+- Engagement → `/my/statistics/engagement/posts`  
+
+- Reach → `/my/statistics/reach/profile-visitors`
+
+Garde le comportement mobile du bouton Home (toggle entre Statistics et Statements) que nous avions défini précédemment :
+
+```js
+
+if (isMobilePage) {
+
+  if (isOnStatisticsMobile) {
+
+    routes.Home = '/my/statements/earnings';
+
+  } else {
+
+    routes.Home = '/my/statistics/overview/earnings';
+
+  }
+
+}
+
+```
+
+### 5. Sauvegarde & finalisation
+
+- Toutes les modifications (thème, données éditées, charts, upload avatar, historique, etc.) continuent d’être sauvegardées en **localStorage** 
+
+- Après ces changements, teste tout sur desktop et mobile et dis-moi quand c’est terminé pour que je valide avant la prochaine étape.
+
+Merci ! Applique tout dans cet ordre exact, sans rien oublier et sans casser ce qui marche déjà.
+
+---
