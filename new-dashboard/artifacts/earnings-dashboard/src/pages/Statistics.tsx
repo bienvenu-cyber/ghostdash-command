@@ -193,12 +193,11 @@ export default function Statistics() {
       {/* Desktop Right Info Panel only */}
       <div className="hidden md:flex w-[260px] flex-shrink-0 bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] flex-col h-full overflow-y-auto">
         <div className="p-5 flex flex-col gap-6">
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
-            <span>⭐</span>
-            <span className="text-[#d4af37] text-[11px] font-bold tracking-wide">{state.topRated.toUpperCase()} OF ALL CREATORS</span>
+          <div className="flex items-center gap-2 text-[#d4af37] text-[11px] font-bold tracking-wide">
+            <span>⭐</span> {state.topRated.toUpperCase()} OF ALL CREATORS
           </div>
 
-          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+          <div className="flex flex-col gap-1">
             <div className="flex gap-4 items-end cursor-pointer hover:opacity-80" onClick={() => setBalanceEditFormOpen(true)}>
               <div>
                 <div className="text-[28px] font-bold text-foreground leading-none">

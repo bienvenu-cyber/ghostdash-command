@@ -62,7 +62,7 @@ export default function Statements() {
 
   const BalanceCard = () => (
     <div
-      className="border border-border rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-muted/50"
+      className="bg-primary/10 border border-primary/20 rounded-lg p-4 flex flex-col gap-4 cursor-pointer hover:bg-primary/15"
       onClick={() => setBalanceEditFormOpen(true)}
     >
       <div className="flex justify-between items-center">
@@ -196,7 +196,7 @@ export default function Statements() {
         </div>
 
         <div className="px-4 py-4 flex flex-col gap-4">
-          <div className="bg-[#fffcf0] dark:bg-[#2a2410] border border-[#f5e6b3] dark:border-[#4a3f1c] rounded-lg p-3 flex items-center gap-2">
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
             <span>⭐</span>
             <span className="text-[#d4af37] text-[11px] font-bold tracking-wide uppercase">YOU ARE IN {state.topRated.toUpperCase()} OF ALL CREATORS!</span>
           </div>
@@ -251,7 +251,7 @@ export default function Statements() {
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))] cursor-pointer" />
           </div>
 
-          <div className="bg-[#fffcf0] dark:bg-[#2a2410] border border-[#f5e6b3] dark:border-[#4a3f1c] rounded-lg p-3 flex items-center gap-2">
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
             <span>⭐</span>
             <span className="text-[#d4af37] text-[11px] font-bold tracking-wide uppercase">YOU ARE IN {state.topRated.toUpperCase()} OF ALL CREATORS!</span>
           </div>
