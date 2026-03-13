@@ -192,8 +192,8 @@ export default function Statements() {
       <div className="md:hidden flex flex-col h-full overflow-y-auto bg-white dark:bg-[hsl(var(--card))] pb-20">
         <div className="flex justify-between items-center px-4 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
           <div className="flex items-center gap-2">
-            <ArrowLeft className="w-5 h-5 text-[hsl(var(--foreground))] dark:text-white" />
-            <h1 className="text-[17px] font-bold text-[hsl(var(--foreground))] dark:text-white uppercase tracking-tight">STATEMENTS</h1>
+            <ArrowLeft className="w-5 h-5 text-foreground" />
+            <h1 className="text-[17px] font-bold text-foreground uppercase tracking-tight">STATEMENTS</h1>
           </div>
           <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
         </div>
@@ -226,10 +226,10 @@ export default function Statements() {
                 key={item.id}
                 onClick={() => handleMenuClick(item.id)}
                 disabled={item.disabled}
-                className={`relative p-2 flex items-center justify-center transition-opacity ${isActive ? 'text-foreground dark:text-white' : item.disabled ? 'text-[#ccc] dark:text-[#444] cursor-not-allowed opacity-50' : 'text-[#999]'}`}
+                className={`relative p-2 flex items-center justify-center transition-opacity ${isActive ? 'text-foreground' : item.disabled ? 'text-muted-foreground/40 cursor-not-allowed opacity-50' : 'text-muted-foreground'}`}
               >
                 <Icon className="w-6 h-6" strokeWidth={isActive ? 2.5 : 1.5} />
-                {isActive && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-foreground dark:bg-white rounded-full" />}
+                {isActive && <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-foreground rounded-full" />}
               </button>
             );
           })}
@@ -249,8 +249,8 @@ export default function Statements() {
         <div className="p-5 flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 cursor-pointer group">
-              <ArrowLeft className="w-5 h-5 text-[hsl(var(--foreground))] dark:text-white group-hover:-translate-x-1 transition-transform" />
-              <h1 className="text-[17px] font-bold text-[hsl(var(--foreground))] dark:text-white uppercase tracking-tight">STATEMENTS</h1>
+              <ArrowLeft className="w-5 h-5 text-foreground group-hover:-translate-x-1 transition-transform" />
+              <h1 className="text-[17px] font-bold text-foreground uppercase tracking-tight">STATEMENTS</h1>
             </div>
             <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))] cursor-pointer" />
           </div>
@@ -263,7 +263,7 @@ export default function Statements() {
           <BalanceCard />
 
           <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-3 flex justify-between items-center cursor-pointer">
-            <span className="text-[14px] text-black dark:text-white">Manual payouts</span>
+            <span className="text-[14px] text-foreground">Manual payouts</span>
             <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
           </div>
 
@@ -280,11 +280,11 @@ export default function Statements() {
                   key={item.id}
                   onClick={() => handleMenuClick(item.id)}
                   disabled={item.disabled}
-                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-foreground dark:text-white font-bold' : item.disabled ? 'text-[#ccc] dark:text-[#444] cursor-not-allowed opacity-50' : 'text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white font-medium'}`}
+                  className={`flex items-center gap-3 py-3 px-2 text-left relative transition-colors ${isActive ? 'text-foreground font-bold' : item.disabled ? 'text-muted-foreground/40 cursor-not-allowed opacity-50' : 'text-muted-foreground hover:text-foreground font-medium'}`}
                 >
                   <Icon className="w-[18px] h-[18px]" strokeWidth={isActive ? 2.5 : 1.5} />
                   <span className="text-[13px] tracking-wide">{item.label}</span>
-                  {isActive && <div className="absolute bottom-1 left-2 right-4 h-[2px] bg-foreground dark:bg-white rounded-full" />}
+                  {isActive && <div className="absolute bottom-1 left-2 right-4 h-[2px] bg-foreground rounded-full" />}
                 </button>
               );
             })}
