@@ -256,9 +256,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
         if (subData) {
           console.log('User authenticated with active subscription');
           setIsAuthenticated(true);
-          setLoginDate(session.user.last_sign_in_at || session.user.created_at);
-          // Show welcome screen if already authenticated (returning user)
-          setShowWelcome(true);
+          const loginTime = session.user.last_sign_in_at || session.user.created_at;
+          setLoginDate(loginTime);
+
+          // Check if we should show welcome screen
+          const lastActivity = localStorage.getItem('lastActivity');
+          const welcomeShown = sessionStorage.getItem('welcomeShown');
+          const now = Date.now();
+
+          // Show welcome only if:
+          // 1. Not shown in this session yet
+          // 2. Last activity was more than 1 hour ago (or no last activity)
+          if (!welcomeShown && (!lastActivity || now - parseInt(lastActivity) > 3600000)) {
+            console.log('Showing welcome screen after inactivity');
+            setShowWelcome(true);
+            sessionStorage.setItem('welcomeShown', 'true');
+          } else {
+            console.log('Skipping welcome screen');
+            setShowWelcome(false);
+          }
+
+          // Update last activity
+          localStorage.setItem('lastActivity', now.toString());
         } else {
           console.log('No active subscription found');
         }
@@ -290,6 +309,26 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return () => clearTimeout(timer);
     }
   }, [authChecked]);
+
+  // Update last activity on any interaction
+  useEffect(() => {
+    if (!isAuthenticated) return undefined;
+
+    const updateActivity = () => {
+      localStorage.setItem('lastActivity', Date.now().toString());
+    };
+
+    // Update on user interactions
+    window.addEventListener('click', updateActivity);
+    window.addEventListener('keydown', updateActivity);
+    window.addEventListener('scroll', updateActivity);
+
+    return () => {
+      window.removeEventListener('click', updateActivity);
+      window.removeEventListener('keydown', updateActivity);
+      window.removeEventListener('scroll', updateActivity);
+    };
+  }, [isAuthenticated]);
 
   // Apply theme class immediately on mount and on every state change
   useEffect(() => {
