@@ -101,7 +101,7 @@ export default function Statistics() {
           <div className="border border-border rounded-md p-4 flex justify-between items-center mb-4">
             <div>
               <div className="font-bold text-[15px] text-foreground">Last 30 days</div>
-              <div className="text-[13px] text-muted-foreground mt-0.5">Apr 23, 2025 – May 23, 2025 (local time UTC +02:00)</div>
+              <div className="text-[13px] text-muted-foreground mt-0.5">Apr 23, 2025 – May 22, 2025 (local time UTC +08:00)</div>
             </div>
             <ChevronDown className="w-5 h-5 text-muted-foreground" />
           </div>

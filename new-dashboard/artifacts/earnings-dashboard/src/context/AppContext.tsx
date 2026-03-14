@@ -63,8 +63,18 @@ function generateMonthlyData(): MonthlyData[] {
 }
 
 function generateDailyChartData(): ChartDataPoint[] {
-  const earningsBase = [95,130,78,165,145,188,112,175,155,90,200,168,140,195,125,175,160,105,185,130,170,145,195,115,160,140,175,130,165,110];
-  const interactionsBase = [180,210,165,245,225,260,195,240,230,170,280,255,215,265,200,245,235,185,255,210,240,220,265,195,235,220,250,205,245,190];
+  // Realistic earnings data matching reference: peaks ~$400-500, troughs ~$50-150, general downtrend toward end
+  const earningsBase = [
+    280, 350, 180, 420, 300, 480, 250, 150, 380, 200,
+    450, 320, 160, 390, 280, 120, 350, 270, 400, 180,
+    300, 220, 150, 280, 190, 100, 250, 170, 130, 80
+  ];
+  // Gray curve (interactions/net) follows similar pattern but lower amplitude
+  const interactionsBase = [
+    180, 230, 120, 280, 200, 320, 160, 100, 250, 130,
+    300, 210, 110, 260, 180, 80, 230, 170, 270, 120,
+    200, 140, 100, 180, 120, 65, 160, 110, 85, 50
+  ];
   const dates: string[] = [];
   const start = new Date(2025, 3, 23);
   for (let i = 0; i < 30; i++) {
