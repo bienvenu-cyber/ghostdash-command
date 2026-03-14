@@ -70,18 +70,18 @@ export default function Statistics() {
   const chartWidth = typeof window !== 'undefined' ? Math.min(window.innerWidth - 48, 900) : 600;
 
   return (
-    <div className="flex h-full w-full bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] overflow-hidden flex-col md:flex-row">
-      <div className="flex-1 flex flex-col h-full bg-white dark:bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] dark:border-[hsl(var(--border))] overflow-y-auto w-full">
-        <div className="sticky top-0 bg-white dark:bg-[hsl(var(--card))] z-10">
-          <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
+    <div className="flex h-full w-full bg-background overflow-hidden flex-col md:flex-row">
+      <div className="flex-1 flex flex-col h-full bg-card border-r border-border overflow-y-auto w-full">
+        <div className="sticky top-0 bg-card z-10">
+          <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-border">
             <div className="flex items-center gap-3">
               <ArrowLeft className="w-5 h-5 text-foreground" />
               <h1 className="text-lg md:text-xl font-bold text-foreground tracking-tight uppercase">STATISTICS</h1>
             </div>
-            <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
+            <HelpCircle className="w-5 h-5 text-muted-foreground" />
           </div>
 
-          <div className="flex px-4 md:px-6 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] gap-4 md:gap-6 overflow-x-auto whitespace-nowrap hide-scrollbar">
+          <div className="flex px-4 md:px-6 border-b border-border gap-4 md:gap-6 overflow-x-auto whitespace-nowrap hide-scrollbar">
             {Object.keys(TAB_ROUTES).map(tab => (
               <button
                 key={tab}
@@ -98,12 +98,12 @@ export default function Statistics() {
         </div>
 
         <div className="p-4 md:p-6 pb-20 md:pb-6">
-          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-md p-4 flex justify-between items-center mb-4">
+          <div className="border border-border rounded-md p-4 flex justify-between items-center mb-4">
             <div>
               <div className="font-bold text-[15px] text-foreground">Last 30 days</div>
               <div className="text-[13px] text-muted-foreground mt-0.5">Apr 23, 2025 – May 23, 2025 (local time UTC +02:00)</div>
             </div>
-            <ChevronDown className="w-5 h-5 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
+            <ChevronDown className="w-5 h-5 text-muted-foreground" />
           </div>
 
           <div
@@ -152,7 +152,7 @@ export default function Statistics() {
 
           <div className="mt-2 overflow-x-auto">
             <div className="min-w-[460px]">
-              <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 px-3 py-2 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] text-[11px] text-[hsl(var(--muted-foreground))] uppercase font-medium">
+              <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 px-3 py-2 border-b border-border text-[11px] text-muted-foreground uppercase font-medium">
                 <div>Date</div>
                 <div className="text-right">Amount</div>
                 <div className="text-right">Fee</div>
@@ -160,7 +160,7 @@ export default function Statistics() {
               </div>
               <div className="flex flex-col">
                 {state.transactions.map((tx, i) => (
-                  <div key={i} className={`flex flex-col py-2.5 px-3 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))] ${tx.selected ? 'bg-[rgba(0,175,240,0.06)]' : ''}`}>
+                  <div key={i} className={`flex flex-col py-2.5 px-3 border-b border-border ${tx.selected ? 'bg-[rgba(0,175,240,0.06)]' : ''}`}>
                     <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-2 items-center">
                       <div className="text-[12px] text-muted-foreground truncate">{tx.date}</div>
                       <div className="text-[13px] font-bold text-foreground text-right">
@@ -171,11 +171,11 @@ export default function Statistics() {
                       </div>
                       <div className="text-[13px] font-bold text-foreground text-right flex items-center justify-end gap-1">
                         <EditableValue value={tx.net} onChange={(v) => handleTransactionEdit(i, 'net', v)} />
-                        {tx.status && <span className="text-[hsl(var(--primary))] text-xs">✓</span>}
+                        {tx.status && <span className="text-primary text-xs">✓</span>}
                       </div>
                     </div>
                     <div className="mt-0.5 text-[12px] text-muted-foreground truncate">
-                      {tx.desc} <span className="text-[hsl(var(--primary))]">{tx.name}</span>
+                      {tx.desc} <span className="text-primary">{tx.name}</span>
                     </div>
                   </div>
                 ))}
@@ -186,7 +186,7 @@ export default function Statistics() {
       </div>
 
       {/* Desktop Right Info Panel only */}
-      <div className="hidden md:flex w-[260px] flex-shrink-0 bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] flex-col h-full overflow-y-auto">
+      <div className="hidden md:flex w-[260px] flex-shrink-0 bg-background flex-col h-full overflow-y-auto">
         <div className="p-5 flex flex-col gap-6">
           <div className="flex items-center gap-2 text-[#d4af37] text-[11px] font-bold tracking-wide">
             <span>⭐</span> {state.topRated.toUpperCase()} OF ALL CREATORS
@@ -221,13 +221,13 @@ export default function Statistics() {
 
           <button
             onClick={() => setWithdrawalOpen(true)}
-            className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors"
+            className="w-full bg-primary hover:bg-primary/90 text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors"
           >
             REQUEST WITHDRAWAL
           </button>
 
           <div className="mt-2">
-            <h3 className="text-[12px] uppercase text-[hsl(var(--muted-foreground))] font-bold mb-4 tracking-wider">EARNINGS</h3>
+            <h3 className="text-[12px] uppercase text-muted-foreground font-bold mb-4 tracking-wider">EARNINGS</h3>
             <div className="flex flex-col">
               {state.earningsData.map((item, i) => (
                 <div key={i} className="flex justify-between items-center py-3 border-b border-border last:border-0">

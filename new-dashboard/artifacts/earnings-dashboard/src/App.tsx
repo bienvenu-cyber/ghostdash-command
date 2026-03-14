@@ -41,8 +41,7 @@ function Router() {
   }
 
   return (
-    <div className={`flex flex-col md:flex-row h-screen w-full overflow-hidden transition-colors ${state.theme === 'dark' ? 'bg-[#fafafa] dark:bg-[#0f0f0f]' : 'bg-[#fafafa]'
-      }`}>
+    <div className="flex flex-col md:flex-row h-screen w-full overflow-hidden bg-background transition-colors">
       <Sidebar />
       <div className="flex-1 h-full overflow-hidden">
         <Switch>
@@ -56,7 +55,7 @@ function Router() {
           {/* Legacy & root redirects */}
           <Route path="/" component={Statistics} />
           <Route>
-            <div className={`p-8 ${state.theme === 'dark' ? 'text-white' : 'text-black'}`}>404 - Not Found</div>
+            <div className="p-8 text-foreground">404 - Not Found</div>
           </Route>
         </Switch>
       </div>

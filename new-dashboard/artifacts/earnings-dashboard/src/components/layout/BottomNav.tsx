@@ -30,25 +30,13 @@ export default function BottomNav() {
   return (
     <div className={cn(
       "md:hidden fixed bottom-0 left-0 right-0 h-[56px] border-t flex items-center justify-between px-6 z-50 transition-colors",
-      state.theme === 'dark'
-        ? "bg-white dark:bg-[#1a1a1a] border-[#e5e5e5] dark:border-[#333]"
-        : "bg-white border-gray-200"
+      "bg-sidebar border-sidebar-border"
     )}>
-      <button onClick={handleHomeClick} className={cn(
-        "transition-colors",
-        state.theme === 'dark'
-          ? "text-[#666666] dark:text-[#999] hover:text-foreground dark:hover:text-white"
-          : "text-gray-600 hover:text-foreground"
-      )}>
+      <button onClick={handleHomeClick} className="text-sidebar-foreground hover:text-foreground transition-colors">
         <Home className="w-6 h-6" />
       </button>
 
-      <button className={cn(
-        "transition-colors relative",
-        state.theme === 'dark'
-          ? "text-[#666666] dark:text-[#999] cursor-not-allowed"
-          : "text-gray-600 cursor-not-allowed"
-      )}>
+      <button className="text-sidebar-foreground cursor-not-allowed transition-colors relative">
         <Bell className="w-6 h-6" />
         {state.notificationsCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center leading-none">
@@ -59,17 +47,12 @@ export default function BottomNav() {
 
       <button
         onClick={() => setAllTimeEarningsFormOpen(true)}
-        className="w-12 h-12 bg-[hsl(var(--primary))] rounded-full flex items-center justify-center text-white shadow-md -translate-y-4 hover:bg-[hsl(var(--primary))] transition-colors"
+        className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-md -translate-y-4 hover:bg-primary/90 transition-colors"
       >
         <Plus className="w-6 h-6" />
       </button>
 
-      <button className={cn(
-        "transition-colors",
-        state.theme === 'dark'
-          ? "text-[#666666] dark:text-[#999] cursor-not-allowed"
-          : "text-gray-600 cursor-not-allowed"
-      )}>
+      <button className="text-sidebar-foreground cursor-not-allowed transition-colors">
         <MessageSquare className="w-6 h-6" />
       </button>
 
@@ -78,7 +61,7 @@ export default function BottomNav() {
           {state.avatar ? (
             <img src={state.avatar} className="w-full h-full object-cover" alt="Avatar" />
           ) : (
-              <div className="w-full h-full bg-[hsl(var(--primary))] text-white flex items-center justify-center text-xs font-bold">U</div>
+              <div className="w-full h-full bg-primary text-white flex items-center justify-center text-xs font-bold">U</div>
           )}
           <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity rounded-full flex items-center justify-center">
             <Camera className="w-3 h-3 text-white" />

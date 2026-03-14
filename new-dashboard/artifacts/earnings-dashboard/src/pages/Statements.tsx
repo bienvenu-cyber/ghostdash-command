@@ -183,16 +183,16 @@ export default function Statements() {
   );
 
   return (
-    <div className="flex h-full w-full bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] overflow-hidden flex-col md:flex-row">
+    <div className="flex h-full w-full bg-background overflow-hidden flex-col md:flex-row">
 
       {/* Mobile layout: single scrollable column */}
-      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-white dark:bg-[hsl(var(--card))] pb-20">
-        <div className="flex justify-between items-center px-4 py-4 border-b border-[hsl(var(--border))] dark:border-[hsl(var(--border))]">
+      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-card pb-20">
+        <div className="flex justify-between items-center px-4 py-4 border-b border-border">
           <div className="flex items-center gap-2">
             <ArrowLeft className="w-5 h-5 text-foreground" />
             <h1 className="text-[17px] font-bold text-foreground uppercase tracking-tight">STATEMENTS</h1>
           </div>
-          <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))]" />
+          <HelpCircle className="w-5 h-5 text-muted-foreground" />
         </div>
 
         <div className="px-4 py-4 flex flex-col gap-4">
@@ -208,13 +208,13 @@ export default function Statements() {
             <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </div>
 
-          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-primary hover:bg-primary/90 text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
         </div>
 
         {/* Mobile icon tab bar */}
-        <div className="flex items-center justify-around px-2 py-3 border-t border-[hsl(var(--border))] dark:border-[hsl(var(--border))] bg-white dark:bg-[hsl(var(--card))]">
+        <div className="flex items-center justify-around px-2 py-3 border-t border-border bg-card">
           {menuItems.map((item) => {
             const isActive = activeMenu === item.id;
             const Icon = item.icon;
@@ -231,24 +231,24 @@ export default function Statements() {
           })}
         </div>
 
-        <div className="px-4 py-5 bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))]">
+        <div className="px-4 py-5 bg-background">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-[13px] font-bold text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] uppercase tracking-wider">EARNING STATISTICS</h2>
-            <div className="text-[11px] text-[hsl(var(--muted-foreground))]">UTC time zone</div>
+            <h2 className="text-[13px] font-bold text-muted-foreground uppercase tracking-wider">EARNING STATISTICS</h2>
+            <div className="text-[11px] text-muted-foreground">UTC time zone</div>
           </div>
           <EarningStatsContent />
         </div>
       </div>
 
       {/* Desktop: Left Panel */}
-      <div className="hidden md:flex w-[280px] flex-shrink-0 bg-white dark:bg-[hsl(var(--card))] border-r border-[hsl(var(--border))] dark:border-[hsl(var(--border))] flex-col h-full overflow-y-auto">
+      <div className="hidden md:flex w-[280px] flex-shrink-0 bg-card border-r border-border flex-col h-full overflow-y-auto">
         <div className="p-5 flex flex-col gap-6">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2 cursor-pointer group">
               <ArrowLeft className="w-5 h-5 text-foreground group-hover:-translate-x-1 transition-transform" />
               <h1 className="text-[17px] font-bold text-foreground uppercase tracking-tight">STATEMENTS</h1>
             </div>
-            <HelpCircle className="w-5 h-5 text-[hsl(var(--muted-foreground))] cursor-pointer" />
+            <HelpCircle className="w-5 h-5 text-muted-foreground cursor-pointer" />
           </div>
 
           <div className="bg-primary/10 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
@@ -258,12 +258,12 @@ export default function Statements() {
 
           <BalanceCard />
 
-          <div className="border border-[hsl(var(--border))] dark:border-[hsl(var(--border))] rounded-lg p-3 flex justify-between items-center cursor-pointer">
+          <div className="border border-border rounded-lg p-3 flex justify-between items-center cursor-pointer">
             <span className="text-[14px] text-foreground">Manual payouts</span>
-            <ChevronDown className="w-4 h-4 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
+            <ChevronDown className="w-4 h-4 text-muted-foreground" />
           </div>
 
-          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))] text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
+          <button onClick={() => setWithdrawalOpen(true)} className="w-full bg-primary hover:bg-primary/90 text-white rounded-full py-3 font-bold text-[14px] uppercase tracking-wide transition-colors">
             REQUEST WITHDRAWAL
           </button>
 
@@ -288,11 +288,11 @@ export default function Statements() {
       </div>
 
       {/* Desktop: Right Panel */}
-      <div className="hidden md:flex flex-1 flex-col h-full bg-[hsl(var(--background))] dark:bg-[hsl(var(--background))] overflow-y-auto">
+      <div className="hidden md:flex flex-1 flex-col h-full bg-background overflow-y-auto">
         <div className="p-6 max-w-[800px] w-full mx-auto pb-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-[13px] font-bold text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))] uppercase tracking-wider">EARNING STATISTICS</h2>
-            <div className="text-[12px] text-[hsl(var(--muted-foreground))]">Date/Time shown in UTC time zone</div>
+            <h2 className="text-[13px] font-bold text-muted-foreground uppercase tracking-wider">EARNING STATISTICS</h2>
+            <div className="text-[12px] text-muted-foreground">Date/Time shown in UTC time zone</div>
           </div>
           <EarningStatsContent />
         </div>
