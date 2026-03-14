@@ -106,11 +106,6 @@ export default function Statistics() {
             <ChevronDown className="w-5 h-5 text-[hsl(var(--muted-foreground))] dark:text-[hsl(var(--muted-foreground))]" />
           </div>
 
-          <div className="flex items-center gap-3 mb-2 px-1">
-            <span className="text-[11px] font-bold text-[hsl(var(--primary))] uppercase tracking-wider bg-[hsl(var(--primary))]/10 px-2 py-0.5 rounded">Journalier</span>
-            <span className="text-[11px] text-[hsl(var(--muted-foreground))] uppercase tracking-wider">Granularité brute</span>
-          </div>
-
           <div
             className="w-full mb-6 overflow-x-auto cursor-pointer relative select-none"
             onClick={handleChartDoubleClick}
@@ -119,26 +114,26 @@ export default function Statistics() {
           >
             <AreaChart
               width={chartWidth}
-              height={180}
+              height={200}
               data={state.chartData}
-              margin={{ top: 5, right: 10, left: 0, bottom: 0 }}
+              margin={{ top: 10, right: 45, left: 0, bottom: 5 }}
             >
               <defs>
                 <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#00D4FF" stopOpacity={0.3} />
+                  <stop offset="95%" stopColor="#00D4FF" stopOpacity={0.05} />
                 </linearGradient>
                 <linearGradient id="colorInteractions" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#A0A0A0" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#A0A0A0" stopOpacity={0.05} />
                 </linearGradient>
               </defs>
               <XAxis
                 dataKey="date"
                 axisLine={false}
                 tickLine={false}
-                tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                dy={8}
+                tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }}
+                dy={10}
                 interval={4}
               />
               <YAxis yAxisId="left" axisLine={false} tickLine={false} tick={{ fontSize: 11, fill: 'hsl(var(--muted-foreground))' }} dx={-5} tickFormatter={(v) => `$${v}`} width={40} />
@@ -150,8 +145,8 @@ export default function Statistics() {
                   fontSize: 12
                 }}
               />
-              <Area yAxisId="right" type="linear" dataKey="interactions" stroke="hsl(var(--muted-foreground))" strokeWidth={1.5} fillOpacity={1} fill="url(#colorInteractions)" dot={false} />
-              <Area yAxisId="left" type="linear" dataKey="earnings" stroke="hsl(var(--primary))" strokeWidth={2} fillOpacity={1} fill="url(#colorEarnings)" dot={false} />
+              <Area yAxisId="right" type="monotone" dataKey="earnings" stroke="#00D4FF" strokeWidth={2} fillOpacity={1} fill="url(#colorEarnings)" dot={false} />
+              <Area yAxisId="left" type="monotone" dataKey="interactions" stroke="#A0A0A0" strokeWidth={2} fillOpacity={1} fill="url(#colorInteractions)" dot={false} />
             </AreaChart>
           </div>
 
