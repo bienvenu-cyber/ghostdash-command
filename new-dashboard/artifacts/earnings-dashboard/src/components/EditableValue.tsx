@@ -27,7 +27,7 @@ export default function EditableValue({ value, onChange, className = '', prefix 
         onChange={e => setLocal(e.target.value)}
         onBlur={handleSave}
         onKeyDown={e => e.key === 'Enter' && handleSave()}
-        className={`border-b border-[#00AFF0] outline-none bg-transparent text-current font-inherit ${className}`}
+        className={`border-b border-primary outline-none bg-transparent text-current font-inherit ${className}`}
         style={{ width: Math.max(local.length, 4) + 'ch' }}
       />
     );
