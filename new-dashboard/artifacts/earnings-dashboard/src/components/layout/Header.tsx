@@ -21,43 +21,25 @@ export function Header() {
   };
 
   return (
-    <header className={cn(
-      "sticky top-0 z-40 border-b transition-colors",
-      state.theme === 'dark'
-        ? "bg-[#0a0a0a] border-white/[0.06]"
-        : "bg-white border-gray-200"
-    )}>
+    <header className="sticky top-0 z-40 border-b transition-colors bg-sidebar border-border">
       <div className="px-6 h-[72px] flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <button className={cn(
-            "md:hidden transition-colors",
-            state.theme === 'dark' ? "text-[#b3b3b3] hover:text-white" : "text-gray-600 hover:text-black"
-          )}>
+          <button className="md:hidden transition-colors text-muted-foreground hover:text-foreground">
             <Menu className="w-6 h-6" />
           </button>
-          <h1 className={cn(
-            "text-xl font-bold tracking-tight",
-            state.theme === 'dark' ? "text-white" : "text-black"
-          )}>{getPageTitle()}</h1>
+          <h1 className="text-xl font-bold tracking-tight text-foreground">{getPageTitle()}</h1>
         </div>
 
         <div className="flex items-center gap-4">
-          <div className={cn(
-            "hidden sm:flex rounded-full p-1 border",
-            state.theme === 'dark'
-              ? "bg-[#1a1a1a] border-white/[0.06]"
-              : "bg-gray-100 border-gray-300"
-          )}>
+          <div className="hidden sm:flex rounded-full p-1 border bg-muted border-border">
             {['7d', '30d', '90d', '1y', 'Custom'].map((period) => (
               <button
                 key={period}
                 className={cn(
                   "px-4 py-1.5 text-sm font-medium rounded-full transition-colors",
                   period === '30d' 
-                    ? "bg-primary text-black" 
-                    : state.theme === 'dark'
-                      ? "text-[#b3b3b3] hover:text-white"
-                      : "text-gray-600 hover:text-black"
+                    ? "bg-primary text-primary-foreground" 
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 {period}
@@ -71,9 +53,7 @@ export function Header() {
               "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all",
               editMode 
                 ? "bg-primary/20 text-primary border border-primary/50" 
-                : state.theme === 'dark'
-                  ? "bg-transparent text-[#b3b3b3] border border-white/10 hover:border-white/20 hover:text-white"
-                  : "bg-transparent text-gray-600 border border-gray-300 hover:border-gray-400 hover:text-black"
+                : "bg-transparent text-muted-foreground border border-border hover:border-foreground/30 hover:text-foreground"
             )}
           >
             {editMode ? (
