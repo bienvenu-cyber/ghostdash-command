@@ -186,7 +186,7 @@ export default function Statements() {
     <div className="flex h-full w-full bg-background overflow-hidden flex-col md:flex-row">
 
       {/* Mobile layout: single scrollable column */}
-      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-card pb-20">
+      <div className="md:hidden flex flex-col h-full overflow-y-auto bg-background pb-20">
         <div className="flex justify-between items-center px-4 py-4 border-b border-border">
           <div className="flex items-center gap-2">
             <ArrowLeft className="w-5 h-5 text-foreground" />
